@@ -12,6 +12,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Login from "./Login";
 import { db } from "../firebase";
 import dynamic from "next/dynamic";
@@ -36,12 +37,15 @@ export default function Home({  providers }) {
       }),
     [db]
   );
+const router = useRouter()
 
   if (!session) return <LandingPage providers={providers} />;
 
   getDoc(doc(db, "users", session.user.uid)).then((docSnap) => {
     if (docSnap.exists()) {
+      
       console.log("user exsits");
+       router.push(`/EducatorDashboard/${session?.user?.uid}`);
     } else {
       console.log("No such document!");
       {
@@ -56,6 +60,9 @@ export default function Home({  providers }) {
           timestamp: serverTimestamp(),
         });
         console.log("success");
+        router.push(
+          `/${session?.user?.uid}`        )
+        
       }
     }
   });
