@@ -1,3 +1,12 @@
+import React from 'react'
+
+function LiveStreaming() {
+  return (
+    <div>LiveStreaming</div>
+  )
+}
+
+export default LiveStreaming
 // import React from 'react'
 
 // import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
