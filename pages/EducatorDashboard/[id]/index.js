@@ -3,6 +3,7 @@ import Course from "../../../components/Course";
 import WebsiteManagement from "../../../components/WebsiteManagement";
 import Sidebar from "../../../components/Navbar"
 import ManageLive from "../../../components/ManageLive";
+import GooglePlayButton from "@google-pay/button-react"
 
 
 function EducatorDashboard() {
@@ -10,9 +11,63 @@ function EducatorDashboard() {
     <div className="flex bg-white h-screen   flex-row gap-60">
       <Sidebar />
       <div className="p-10 gap-5 flex flex-row">
-        <Course/>
+        <Course />
         <WebsiteManagement />
         <ManageLive />
+        <GooglePlayButton
+          environment="TEST"
+          paymentRequest={{
+            apiVersion: 2,
+            apiVersionMinor: 0,
+            allowedPaymentMethods: [
+              {
+                type: "CARD",
+                parameters: {
+                  allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                  allowedCardNetworks: [
+                    "AMEX",
+                    "DISCOVER",
+                    "INTERAC",
+                    "JCB",
+                    "MASTERCARD",
+                    "VISA",
+                  ],
+                },
+                tokenizationSpecification: {
+                  type: "PAYMENT_GATEWAY",
+                  parameters: {
+                    gateway: "example",
+                    gatewayMerchantId: "exampleGatewayMerchantId",
+                  },
+                },
+              },
+            ],
+            merchantInfo: {
+              merchantId: "12345678901234567890",
+              merchantName: "Demo Merchant",
+            },
+            transactionInfo: {
+              totalPriceStatus: "FINAL",
+              totalPriceLabel: "Total",
+              totalPrice: "1.00",
+              currencyCode: "INR",
+              countryCode: "IN",
+            },
+            emailRequired: true,
+            shippingAddressRequired: true,
+            callbackIntents: ["PAYMENT_AUTHORIZATION"],
+          }}
+          onLoadPaymentData={(paymentRequest) => {
+            console.log("Success", paymentRequest);
+          }}
+          onPaymentAuthorized={(paymentData) => {
+            console.log("Payment Authorised Success", paymentData);
+            return { transactionState: "SUCCESS" };
+          }}
+          existingPaymentMethodRequired="false"
+          buttonColor="black"
+          buttonType="buy"
+        ></GooglePlayButton>
       </div>
     </div>
   );

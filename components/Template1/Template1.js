@@ -471,9 +471,9 @@ github: https://github.com/naemazam
           </div>
         </div>
       </section>
-      <section className="blog background2">
-        <div className="container">
-          <div className="heading heading2">
+      {/* <section className="blog background2">
+        <div className="container"> */}
+          {/* <div className="heading heading2">
             <div className="heading_top flex">
               <div className="line" />
               <div className="line line2" />
@@ -485,10 +485,10 @@ github: https://github.com/naemazam
                 <span>Some Research &amp; Activity </span>
               </h2>
             </div>
-          </div>
+          </div> */}
           {/* Photo Grid */}
-          <div className="row">
-            <div className="column">
+          {/* <div className="row">
+            {/* <div className="column">
               <div className="box">
                 <img src="image/b1.jpg" />
                 <div className="text">
@@ -496,8 +496,8 @@ github: https://github.com/naemazam
                   <h4>Research Paper Name </h4>
                 </div>
               </div>
-            </div>
-            <div className="column column2">
+            </div> */}
+            {/*<div className="column column2">
               <div className="box">
                 <img src="image/b2.jpg" />
                 <div className="text">
@@ -522,10 +522,10 @@ github: https://github.com/naemazam
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           {/* Photo Grid */}
-        </div>
-      </section>
+        {/* </div>
+      </section> */}
       <section className="contact top">
         <div className="container flex">
           <div className="left">

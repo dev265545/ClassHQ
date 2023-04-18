@@ -51,12 +51,15 @@ const router = useRouter()
       {
         setDoc(doc(db, "users", session.user.uid), {
           id: session.user.uid,
-          tag: session.user.tag,
+          // tag: session.user.tag,
           username: session.user.name,
           userImg: session.user.image,
           email: session.user.email,
-          coverphoto: "https://i.im.ge/2022/07/26/FLevID.jpg",
-          bio: "",
+          // coverphoto: "https://i.im.ge/2022/07/26/FLevID.jpg",
+          subscription : 1,
+          website_template : null ,
+          payment : null,
+
           timestamp: serverTimestamp(),
         });
         console.log("success");
