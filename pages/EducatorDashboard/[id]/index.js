@@ -1,18 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Course from "../../../components/Course";
 import WebsiteManagement from "../../../components/WebsiteManagement";
 import Sidebar from "../../../components/Navbar"
 import ManageLive from "../../../components/ManageLive";
 import GooglePlayButton from "@google-pay/button-react"
+import {
+  collection,
+  onSnapshot,
+  query,
+  where,
+  setDoc,
+  doc,
+  getDoc,
+  getDocs,
+  serverTimestamp,
+  addDoc,
+} from "firebase/firestore";
 
+import { useSession } from "next-auth/react";
+import { db } from "../../../firebase";
 
 function EducatorDashboard() {
+  const { data: session } = useSession();
+
+  const [user, setUser] = useState([]);
+  useEffect(
+    () =>
+      onSnapshot(query(collection(db, "users")), (snapshot) => {
+        setUser(snapshot.docs[0].data());
+      }),
+    [db]
+  );
+  console.log(user);
   return (
     <div className="flex bg-white h-screen   flex-row gap-60">
       <Sidebar />
       <div className="p-10 gap-5 flex flex-row">
         <Course />
-        <WebsiteManagement />
+        <WebsiteManagement user = {user} />
         <ManageLive />
         <GooglePlayButton
           environment="TEST"
