@@ -64,7 +64,7 @@ const router = useRouter()
         });
         console.log("success");
         router.push(
-          `/${session?.user?.uid}`        )
+          `/${session?.user?.uid}/EducatorDashboard`        )
         
       }
     }
