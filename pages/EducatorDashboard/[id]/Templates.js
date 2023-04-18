@@ -71,11 +71,11 @@ function Templates() {
           <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
             <div class="max-w-screen-md mb-8 lg:mb-16">
               <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 ">
-                <div class="triangle absolute top-0 right-0 w-200 z-50 h-200 border-t-4 border-r-4">
+                <div class="triangle absolute top-0 right-20  rounded-full z-50  border-t-4 border-r-4">
                   <Image
-                    width={310}
-                    height={350}
-                    class=" rounded-xl sm:rounded-none sm:rounded-l-lg"
+                    width={250}
+                    height={250}
+                    class=" rounded-full bg-transparent sm:rounded-none sm:rounded-l-lg"
                     src={design1}
                     alt="Bonnie Avatar"
                   />
