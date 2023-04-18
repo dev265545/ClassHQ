@@ -39,7 +39,7 @@ function EducatorDashboard() {
         <Course />
         <WebsiteManagement user = {user} />
         <ManageLive />
-        <GooglePlayButton
+        {/* <GooglePlayButton
           environment="TEST"
           paymentRequest={{
             apiVersion: 2,
@@ -92,7 +92,7 @@ function EducatorDashboard() {
           existingPaymentMethodRequired="false"
           buttonColor="black"
           buttonType="buy"
-        ></GooglePlayButton>
+        ></GooglePlayButton> */}
       </div>
     </div>
   );
