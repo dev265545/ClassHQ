@@ -8,7 +8,7 @@
 import React, { useEffect, useState } from 'react'
 import home from "./image/home.jpg"
 import { useRouter } from 'next/router';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { collection, doc, getDoc, onSnapshot, query, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 function Template1() {
@@ -202,7 +202,9 @@ github: https://github.com/naemazam
               )}
               {studentSignedIn && (
                 <button
-               
+                  onClick={() => {
+                    openModal();
+                  }}
                   className=" bg-black "
                 >
                   Hi {studentSet?.username}
@@ -799,19 +801,36 @@ github: https://github.com/naemazam
                     <span class="sr-only">Close modal</span>
                   </button>
                   <div class="p-6 text-center">
-                    <button
-                      className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group"
-                      onClick={() =>
-                        signIn("google", {
-                          callbackUrl: `/EducatorDashboard/${router.query.id}/Show`,
-                        })
-                      }
-                    >
-                      <span className="w-48 h-48 rounded rotate-[-40deg] bg-[#1d9bf0] absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
-                      <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white">
-                        Sign in with Google
-                      </span>
-                    </button>
+                    {!studentSignedIn && (
+                      <button
+                        className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group"
+                        onClick={() =>
+                          signIn("google", {
+                            callbackUrl: `/EducatorDashboard/${router.query.id}/Show`,
+                          })
+                        }
+                      >
+                        <span className="w-48 h-48 rounded rotate-[-40deg] bg-[#1d9bf0] absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                        <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white">
+                          Sign in with Google
+                        </span>
+                      </button>
+                    )}
+                    {studentSignedIn && (
+                      <button
+                        className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group"
+                        onClick={() =>
+                          signOut({
+                            callbackUrl: `/EducatorDashboard/${router.query.id}/Show`,
+                          })
+                        }
+                      >
+                        <span className="w-48 h-48 rounded rotate-[-40deg] bg-[#1d9bf0] absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                        <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white">
+                         Sign Out
+                        </span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
