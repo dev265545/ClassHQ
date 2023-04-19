@@ -37,8 +37,8 @@ function EducatorDashboard() {
       <Sidebar />
       <div className="p-10 gap-5 flex flex-row">
         <Course />
-        <WebsiteManagement user = {user} />
-        <ManageLive />
+        <WebsiteManagement user={user} />
+        <ManageLive user={user} />
         {/* <GooglePlayButton
           environment="TEST"
           paymentRequest={{

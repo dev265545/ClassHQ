@@ -1,6 +1,8 @@
+import { useRouter } from "next/router";
 import React from "react";
 import { BiPlusCircle } from "react-icons/bi";
-function ManageLive() {
+function ManageLive({user}) {
+const router = useRouter()
   return (
     <div className="p-4  w-[250px] h-[155px]  wavy   rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
       <div className="flex flex-col">
@@ -9,7 +11,7 @@ function ManageLive() {
            To LiveStreaming 
           </p>
           <button
-            // onClick={openModal}
+            onClick={() => {router.push(`${user.id}/LiveStreaming`)}}
             className="   rounded-full font-bold uppercase text-xs p-1  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
             type="button"
           >

@@ -6,12 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest --watch",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@google-pay/button-react": "^3.0.6",
     "@headlessui/react": "^1.7.13",
-    "@zegocloud/zego-uikit-prebuilt": "^1.7.4",
+    "@zegocloud/zego-uikit-prebuilt": "^1.7.5",
     "boostrap": "^2.0.0",
     "firebase": "^9.18.0",
     "framer-motion": "^10.12.2",
@@ -30,9 +32,13 @@
     "styled-components": "^5.3.9"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
     "autoprefixer": "^10.4.14",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7"
   }

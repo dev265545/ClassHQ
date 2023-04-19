@@ -5,13 +5,68 @@
 /* eslint-disable @next/next/no-img-element */
 
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import home from "./image/home.jpg"
+import { useRouter } from 'next/router';
+import { signIn, useSession } from 'next-auth/react';
+import { collection, doc, getDoc, onSnapshot, query, serverTimestamp, setDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 function Template1() {
+  const router = useRouter();
+   const {data : session} = useSession();
+  const [studentSet, setStudentSet] = useState([]);
+  const [studentSignedIn, setStudentSignedIn] = useState(false);
+  if(!session){
+   console.log('not signed in')
+  }
+  else {
+        getDoc(doc(db, "users", router.query.id,"students", session?.user?.uid)).then((docSnap) => {
+    if (docSnap.exists()) {
+      
+      console.log("user exsits");
+      setStudentSignedIn(true);
+      setStudentSet(docSnap.data());
+      
+      //  router.push(`/EducatorDashboard/${session?.user?.uid}`);
+    } else {
+      console.log("No such document!");
+      {
+        setDoc(doc(db, "users",router.query.id,"students", session?.user?.uid), {
+          id: session.user.uid,
+          // tag: session.user.tag,
+          username: session.user.name,
+          userImg: session.user.image,
+          email: session.user.email,
+          // coverphoto: "https://i.im.ge/2022/07/26/FLevID.jpg",
+          // subscription : 1,
+          // website_template : null ,
+          // payment : null,
+
+          timestamp: serverTimestamp(),
+        });
+        console.log("success");
+      setStudentSignedIn(true);
+      
+        
+      }
+    }})};
+
+
+
+
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   const data = {
     name: "Naem Azam",
-    links: ["Home", "About", "Skills", "Resume", "Portfolio", "Contact"],
+    links: ["Home", "Courses"],
     job: "Web Developer",
     firstname: "Naem",
     lastname: "Azam",
@@ -135,7 +190,25 @@ github: https://github.com/naemazam
             </div>
             <p> {data?.description} </p>
             <div className="button p-2 gap-3">
-              <button className=" bg-black ">Sign In</button>
+              {!studentSignedIn && (
+                <button
+                  onClick={() => {
+                    openModal();
+                  }}
+                  className=" bg-black "
+                >
+                  Sign In
+                </button>
+              )}
+              {studentSignedIn && (
+                <button
+               
+                  className=" bg-black "
+                >
+                  Hi {studentSet?.username}
+                </button>
+              )}
+
               <button className="btn2">Rate Me</button>
             </div>
           </div>
@@ -252,8 +325,6 @@ github: https://github.com/naemazam
                 </p>
               </div>
             </div>
-           
-         
           </div>
         </div>
       </section>
@@ -388,8 +459,6 @@ github: https://github.com/naemazam
                     </section>
                   </div>
                 ))}
-
-                
               </div>
               {/*     timeline    */}
             </div>
@@ -429,7 +498,7 @@ github: https://github.com/naemazam
             </div>
           </div>
           <div className="right">
-            <div className = " gap-4">
+            <div className=" gap-4">
               <div className="item mtop">
                 <div className="image flex1">
                   <img src="image/c1.jpg" className="item_img" />
@@ -473,7 +542,7 @@ github: https://github.com/naemazam
       </section>
       {/* <section className="blog background2">
         <div className="container"> */}
-          {/* <div className="heading heading2">
+      {/* <div className="heading heading2">
             <div className="heading_top flex">
               <div className="line" />
               <div className="line line2" />
@@ -486,8 +555,8 @@ github: https://github.com/naemazam
               </h2>
             </div>
           </div> */}
-          {/* Photo Grid */}
-          {/* <div className="row">
+      {/* Photo Grid */}
+      {/* <div className="row">
             {/* <div className="column">
               <div className="box">
                 <img src="image/b1.jpg" />
@@ -497,7 +566,7 @@ github: https://github.com/naemazam
                 </div>
               </div>
             </div> */}
-            {/*<div className="column column2">
+      {/*<div className="column column2">
               <div className="box">
                 <img src="image/b2.jpg" />
                 <div className="text">
@@ -523,8 +592,8 @@ github: https://github.com/naemazam
               </div>
             </div>
           </div> */}
-          {/* Photo Grid */}
-        {/* </div>
+      {/* Photo Grid */}
+      {/* </div>
       </section> */}
       <section className="contact top">
         <div className="container flex">
@@ -697,6 +766,58 @@ github: https://github.com/naemazam
             </div>
           </div>
         </div>
+        {isOpen && (
+          <div>
+            <div
+              id="popup-modal"
+              tabindex="-1"
+              class="fixed top-0 left-0 right-0 z-50  flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+            >
+              <div class="relative w-full max-w-md max-h-full">
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                  <button
+                    onClick={() => {
+                      closeModal();
+                    }}
+                    type="button"
+                    class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                    data-modal-hide="popup-modal"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                  </button>
+                  <div class="p-6 text-center">
+                    <button
+                      className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group"
+                      onClick={() =>
+                        signIn("google", {
+                          callbackUrl: `/EducatorDashboard/${router.query.id}/Show`,
+                        })
+                      }
+                    >
+                      <span className="w-48 h-48 rounded rotate-[-40deg] bg-[#1d9bf0] absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                      <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white">
+                        Sign in with Google
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </footer>
       {/* navbar  */}
       {/* navbar  */}
