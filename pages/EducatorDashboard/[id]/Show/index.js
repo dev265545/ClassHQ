@@ -1,5 +1,5 @@
 import React from "react";
-import Template1 from "../../../components/Template1/Template1";
+import Template1 from "../../../../components/Template1/Template1";
 
 function Show() {
   return (
