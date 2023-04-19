@@ -151,13 +151,32 @@ function Template1() {
               <img src="image/logo.png" alt="" />
             </a>
             <ul className="nav-menu">
-              {data.links.map((link, index) => (
-                <li key={index} className="nav-item">
-                  <a href="" className="nav-link active">
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li  className="nav-item">
+                <a
+                  onClick={() => {
+                    router(
+                      `/EducatorDashboard/${router?.query?.id}/Show/`
+                    );
+                  }}
+                  href=""
+                  className="nav-link active"
+                >
+                 Home
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  onClick={() => {
+                    router(
+                      `/EducatorDashboard/${router.query.id}/Show/Courses`
+                    );
+                  }}
+                  href=""
+                  className="nav-link active"
+                >
+                Courses
+                </a>
+              </li>
             </ul>
             <div className="hamburger">
               <span className="bar" />
@@ -827,7 +846,7 @@ github: https://github.com/naemazam
                       >
                         <span className="w-48 h-48 rounded rotate-[-40deg] bg-[#1d9bf0] absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
                         <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white">
-                         Sign Out
+                          Sign Out
                         </span>
                       </button>
                     )}
