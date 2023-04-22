@@ -1,9 +1,38 @@
+import { doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { db } from '../firebase';
+import Template1Modal from './Template1/Template1Modal';
 
-function TemplateModal({ isOpen, closeModal, openModal, activetemplateId }) {
+function TemplateModal({ isOpen, closeModal, openModal, activetemplateId,user }) {
+  console.log(activetemplateId)
+  const [selected, setSelcted] = useState(false)
+  const [templatemodalopen, setTemplateModalOpen] = useState(false)
+
+  const openTemplate1Modal = () => {
+    setTemplateModalOpen(true)
+  }
+  const closeTemplate1Modal = () => {
+    setTemplateModalOpen(false)
+  }
+
+  useEffect(()=>{
+if (user?.website_template === activetemplateId?.codename) {
+  setSelcted(true);
+}
+ 
+  },[user?.website_template,activetemplateId?.codename])
+
      
      const router = useRouter();
+     const handletemplateselect = () => {
+      const cityRef = doc(db, "users", user?.id);
+      setDoc(cityRef, { website_template: 'Template1' }, { merge: true });
+     }
+      const handletemplateunselect = () => {
+        const cityRef = doc(db, "users", user?.id);
+        setDoc(cityRef, { website_template: null }, { merge: true });
+      };
   return (
     <div
       data-te-modal-init
@@ -15,12 +44,12 @@ function TemplateModal({ isOpen, closeModal, openModal, activetemplateId }) {
       role="dialog"
     >
       {
-        <div class="relative p-4 w-full max-w-xl h-full md:h-auto">
-          <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+        <div class="relative p-4 w-full  h-full md:h-auto">
+          <div class="relative p-4  rounded-lg shadow bg-gray-900 sm:p-5">
             <div class="flex justify-between mb-4 rounded-t sm:mb-5">
-              <div class="text-lg text-gray-900 md:text-xl dark:text-white">
-                <h3 class="font-semibold ">{activetemplateId}</h3>
-                <p class="font-bold">$2999</p>
+              <div class="text-lg  md:text-xl text-white">
+                <h3 class="font-semibold ">{activetemplateId?.codename}</h3>
+                <p class="font-bold">{activetemplateId?.name}</p>
               </div>
               <div>
                 <button
@@ -48,45 +77,177 @@ function TemplateModal({ isOpen, closeModal, openModal, activetemplateId }) {
                 </button>
               </div>
             </div>
-            <dl>
-              <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-                Details
-              </dt>
-              <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                Standard glass ,3.8GHz 8-core 10th-generation Intel Core i7
-                processor, Turbo Boost up to 5.0GHz, 16GB 2666MHz DDR4 memory,
-                Radeon Pro 5500 XT with 8GB of GDDR6 memory, 256GB SSD storage,
-                Gigabit Ethernet, Magic Mouse 2, Magic Keyboard - US.
-              </dd>
-              <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-                Category
-              </dt>
-              <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                Electronics/PC
-              </dd>
-            </dl>
+            <section class="  rounded-xlbg-gray-900">
+              <div class="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
+                <div class="font-light  sm:text-lg text-gray-400">
+                  <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-white">
+                    {activetemplateId?.name}
+                  </h2>
+                  <p class="mb-4">{activetemplateId?.decription}</p>
+                  <p>{activetemplateId?.info}</p>
+                </div>
+
+                <div
+                  id="default-carousel"
+                  class="relative w-full"
+                  data-carousel="slide"
+                >
+                  <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+                    <div class=" duration-100 ease-in-out" data-carousel-item>
+                      <img
+                        src={activetemplateId?.images[0]}
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                        alt="..."
+                      />{" "}
+                    </div>
+                    <div
+                      class=" duration-100 ease-in-out"
+                      data-carousel-item="active"
+                    >
+                      <img
+                        src={activetemplateId?.images[1]}
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                        alt="..."
+                      />
+                    </div>
+
+                    <div class=" duration-100 ease-in-out" data-carousel-item>
+                      <img
+                        src={activetemplateId?.images[2]}
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                        alt="..."
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                    data-carousel-prev
+                  >
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                      <svg
+                        aria-hidden="true"
+                        class="w-6 h-6 text-white dark:text-gray-800"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 19l-7-7 7-7"
+                        ></path>
+                      </svg>
+                      <span class="sr-only">Previous</span>
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                    data-carousel-next
+                  >
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                      <svg
+                        aria-hidden="true"
+                        class="w-6 h-6 text-white dark:text-gray-800"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                      <span class="sr-only">Next</span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </section>
             <div class="flex justify-between items-center">
               <div class="flex items-center space-x-3 sm:space-x-4">
-                <button
-                  type="button"
-                  class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="mr-1 -ml-1 w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
+                {!selected && (
+                  <button
+                    onClick={() => {
+                      setSelcted(true);
+                      handletemplateselect();
+                    }}
+                    type="button"
+                    class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   >
-                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
-                    <path
-                      fill-rule="evenodd"
-                      d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                  Edit
-                </button>
+                  
+                    Select this Template
+                  </button>
+                )}
+                {selected && (
+                  <button
+                    onClick={() => {
+                      setSelcted(false);
+                      handletemplateunselect();
+                    }}
+                    type="button"
+                    class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  >
+                   
+                    Selected
+                  </button>
+                )}
+                {!selected && (
+                  <button
+                  disabled
+                   
+                    type="button"
+                    class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="mr-1 -ml-1 w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
+                      <path
+                        fill-rule="evenodd"
+                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                   Edit
+                  </button>
+                )}
+                {selected && (
+                  <button
+                    onClick={() => {
+                      openTemplate1Modal();
+                    }}
+                    type="button"
+                    class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="mr-1 -ml-1 w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
+                      <path
+                        fill-rule="evenodd"
+                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Edit
+                  </button>
+                )}
                 <button
                   type="button"
                   class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
@@ -94,7 +255,7 @@ function TemplateModal({ isOpen, closeModal, openModal, activetemplateId }) {
                   Preview
                 </button>
               </div>
-              <button
+              {/* <button
                 type="button"
                 class="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
               >
@@ -112,12 +273,14 @@ function TemplateModal({ isOpen, closeModal, openModal, activetemplateId }) {
                   ></path>
                 </svg>
                 Delete
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
       }
-      
+      {
+        templatemodalopen && <Template1Modal closeTemplate1Modal={closeTemplate1Modal} />
+      }
     </div>
   );
 }

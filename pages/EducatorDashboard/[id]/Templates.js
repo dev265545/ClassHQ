@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../../../components/Navbar';
 import Course from '../../../components/Course';
 import { BiLinkExternal } from 'react-icons/bi';
@@ -6,62 +6,47 @@ import Image from 'next/image';
 import design1 from "../../../public/2481_R0lVIEpFTiA4MTgtMTg.jpg"
 import WebsiteModal from '../../../components/WebsiteModal';
 import TemplateModal from '../../../components/TemplateModal';
+import { collection, doc, getDoc, onSnapshot, query } from 'firebase/firestore';
+import { db } from '../../../firebase';
+import { CgLink } from 'react-icons/cg';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 function Templates() {
   const [isOpen, setIsOpen] = useState(false)
   const [activetemplateId, setActivetemplateId] = useState()
+  const [user, setUser] = useState([])
+  const router = useRouter()
+  const {data : session} = useSession()
+  const [templates, setTemplates] = useState([])
   const openModal = (id) => {
-    setActivetemplateId(id)
+    console.log(id)
+    setActivetemplateId(templates[id])
     setIsOpen(true)
   }
   const closeModal = () => {
     setIsOpen(false)
   }
 
+  useEffect(
+    () =>
+      onSnapshot(query(collection(db, "templates")), (snapshot) => {
+        setTemplates(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+      }),
+    []
+  );
+   useEffect(()=>{
+    if(session)
+      
+      getDoc(doc(db, "users", session?.user?.uid)).then((docSnap) => {
+        if (docSnap.exists()) {
+          console.log("user exsits", docSnap.data());
+          setUser(docSnap.data());
+        }
+      }
+    ,[session]);
 
-  const data = [
-    {
-      id: 1,
-      name: "Template 1",
-      description: "This is a template",
-      image:
-        "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png",
-    },
-    {
-      id: 2,
-      name: "Template 2",
-      description: "This is a template",
-      image:
-        "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png",
-    },
-    {
-      id: 1,
-      name: "Template 1",
-      description: "This is a template",
-      image:
-        "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png",
-    },
-    {
-      id: 2,
-      name: "Template 2",
-      description: "This is a template",
-      image:
-        "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png",
-    },
-    {
-      id: 1,
-      name: "Template 1",
-      description: "This is a template",
-      image:
-        "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png",
-    },
-    {
-      id: 2,
-      name: "Template 2",
-      description: "This is a template",
-      image:
-        "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png",
-    },
-  ];
+   })
+
   return (
     <div className="flex bg-white  min-h-screen   flex-row gap-60">
       <Sidebar />
@@ -90,17 +75,17 @@ function Templates() {
               </p>
             </div>
             <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-2 md:gap-12 md:space-y-0">
-              {data.map((template, index) => (
+              {templates?.map((template, index) => (
                 <div
                   key={index}
-                  class="items-center bg-gray-50 rounded-lg shadow-lg shadow-blue-100 border-8 sm:flex  dark:border-gray-700"
+                  class="items-center bg-pink-100 rounded-lg shadow-lg shadow-blue-100 border-8 sm:flex  dark:border-gray-700"
                 >
                   <a className="rounded-full p-2" href="#">
                     <Image
-                      width={400}
-                      height={400}
+                      width={4000}
+                      height={4000}
                       class="w-full p-2  rounded-xl sm:rounded-none sm:rounded-l-lg"
-                      src={template?.image}
+                      src={template?.images[0]}
                       alt="Bonnie Avatar"
                     />
                   </a>
@@ -109,11 +94,20 @@ function Templates() {
                       <a href="#">{template?.name}</a>
                     </h3>
                     <span class="text-gray-500 ">{template?.description}</span>
-                    <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400"></p>
+
+                    <a
+                      href={template?.link}
+                      target="_blank"
+                      class="mt-3 mb-4  flex items-center justify-center "
+                    >
+                      <div>Preview View</div>
+
+                      <CgLink className="font-bold text-3xl  text-black"></CgLink>
+                    </a>
                     <div className="flex items-center justify-center">
                       <button
                         onClick={() => {
-                          openModal(template?.id);
+                          openModal(index);
                         }}
                         type="button"
                         class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
@@ -131,6 +125,7 @@ function Templates() {
       {isOpen && (
         <TemplateModal
           // doctor={doctor}
+          user = {user}
           activetemplateId={activetemplateId}
           isOpen={isOpen}
           closeModal={closeModal}

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 function Show() {
   const router = useRouter()
-  const { id } = router.query.id
+  const id  = router?.query?.id
   return (
     <div>
       <Template1 id={id} />

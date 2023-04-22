@@ -6,6 +6,6 @@ const nextConfig = {
 
 module.exports = {
   images: {
-    domains: ["flowbite.s3.amazonaws.com"],
+    domains: ["flowbite.s3.amazonaws.com", "res.cloudinary.com"],
   },
 };
