@@ -6,8 +6,12 @@ import { useRouter } from 'next/router';
 import { db } from '../../../firebase';
 import ImageUploader from '../../../components/ImageUploader';
 import CourseModal from '../../../components/CourseModal';
+import Image from 'next/image';
+import Dashboard from "../../../public/content-moderation.gif";
+import { useSession } from 'next-auth/react';
 
 function Course() {
+  const {data : session} =useSession()
   const router = useRouter()
   const [coursemodal, setCourseModal] = useState(false)
   const [courses, setCourses] = useState([])
@@ -63,9 +67,30 @@ function Course() {
 });
   }
   return (
-    <div className="flex  bg-blue-100 min-h-screen flex-row gap-60">
+    <div className="flex  bg-purple-200 min-h-screen flex-row gap-60">
       <Sidebar />
       <div className="p-10 gap-5 flex flex-col">
+        <Image
+            width={1}
+            height={1}
+            className="w-[500px] h-[800px] fixed right-0 top-0  "
+            src={Dashboard}
+            alt="Picture of the author"
+          />
+        <div className="flex flex-col gap-0">
+          <h1 className="text-4xl font-sans text-black font-bold">
+            Hey! {session?.user?.name}, Welcome to your Courses Page
+          </h1>
+
+          <p className="text-gray-600 font-semibold inline-flex gap-0 ">
+            This is your Courses Page which has gives you the feature to add
+            courses Here you can add update edit and delete your courses ....
+          </p>
+          <div className=" text-black font-normal inline-block ">
+            We hope you provide the people with best of your knoweldge and Class-HQ could help you in that.
+          </div>
+          <hr class="h-[2px] my-8 bg-black text-black"></hr>
+        </div>
         <div className="p-4  flex items-center justify-center w-[250px] h-[155px]  wavy  bg-gray-800  rounded-lg border shadow-md sm:p-8 bg-gray-800 border-gray-700">
           <div className="flex flex-col">
             <div
@@ -86,7 +111,7 @@ function Course() {
             </div>
           </div>
         </div>
-        <div className='grid grid-cols-4 gap-5'>
+        <div className="grid grid-cols-4 gap-5">
           {courses.map((course, index) => (
             <div key={index} className=" gap-5 flex flex-row">
               <div className="p-4  flex items-center justify-center w-[250px] h-[155px]  wavy  bg-gray-800  rounded-lg border shadow-md sm:p-8 bg-gray-800 border-gray-700">
@@ -96,7 +121,9 @@ function Course() {
                       {course.coursename}
                     </p>
                     <button
-                     onClick={() => {opencourseModal(course)}}
+                      onClick={() => {
+                        opencourseModal(course);
+                      }}
                       className="   rounded-full font-bold uppercase text-xs p-1  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
                       type="button"
                     >
@@ -105,7 +132,12 @@ function Course() {
                   </div>
                 </div>
               </div>
-              { coursemodal && <CourseModal course={courseSelected} closecourseModal={closecourseModal} />}
+              {coursemodal && (
+                <CourseModal
+                  course={courseSelected}
+                  closecourseModal={closecourseModal}
+                />
+              )}
             </div>
           ))}
         </div>

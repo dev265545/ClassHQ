@@ -7,7 +7,7 @@ function Course() {
   const router = useRouter()
   const {data : session} = useSession()
   return (
-    <div className="p-4  w-[250px] h-[155px]  wavy   rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <div className="p-4  w-[250px] h-[155px]  cubes   rounded-lg border shadow-md sm:p-8 bg-gray-800 border-gray-700">
       <div
         onClick={(e) => {
           router.push(`/EducatorDashboard/${session.user.uid}/Course`);

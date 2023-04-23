@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.wavy {
+   background-color: #000000;
+opacity: 1;
+background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #000000 35px ), repeating-linear-gradient( #0038f855, #0038f8 );}
+.circles {
+    background-color: #ffffff;
+opacity: 1;
+background-image: radial-gradient(circle at center center, #2781b1, #ffffff), repeating-radial-gradient(circle at center center, #2781b1, #2781b1, 18px, transparent 36px, transparent 18px);
+background-blend-mode: multiply;
+}
+.cubes {
+    background-color: #000000;
+opacity: 1;
+background-image:  linear-gradient(30deg, #be1fef 12%, transparent 12.5%, transparent 87%, #be1fef 87.5%, #be1fef), linear-gradient(150deg, #be1fef 12%, transparent 12.5%, transparent 87%, #be1fef 87.5%, #be1fef), linear-gradient(30deg, #be1fef 12%, transparent 12.5%, transparent 87%, #be1fef 87.5%, #be1fef), linear-gradient(150deg, #be1fef 12%, transparent 12.5%, transparent 87%, #be1fef 87.5%, #be1fef), linear-gradient(60deg, #be1fef77 25%, transparent 25.5%, transparent 75%, #be1fef77 75%, #be1fef77), linear-gradient(60deg, #be1fef77 25%, transparent 25.5%, transparent 75%, #be1fef77 75%, #be1fef77);
+background-size: 52px 91px;
+background-position: 0 0, 0 0, 26px 46px, 26px 46px, 0 0, 26px 46px;
+}
