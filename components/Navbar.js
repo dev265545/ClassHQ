@@ -49,7 +49,7 @@ function Sidebar() {
               </div>
               <div
                 onClick={() =>
-                  router.push(`/EducatorDashboard/${session?.user?.id}/LiveStreaming`)
+                  router.push(`/EducatorDashboard/${session?.user?.uid}/LiveStreaming`)
                 }
                 className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gradient-to-l from-purple-500 to-pink-500   p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"
               >
@@ -62,7 +62,7 @@ function Sidebar() {
               <div
                 onClick={() =>
                   router.push(
-                    `/EducatorDashboard/${session?.user?.id}/Templates`
+                    `/EducatorDashboard/${session?.user?.uid}/Templates`
                   )
                 }
                 className="flex   mb-2 justify-start items-center gap-4 pl-5 hover:bg-gradient-to-l from-purple-500 to-pink-500   p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"

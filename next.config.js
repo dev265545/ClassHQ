@@ -10,6 +10,10 @@ module.exports = {
     return config;
   },
   images: {
-    domains: ["flowbite.s3.amazonaws.com", "res.cloudinary.com"],
+    domains: [
+      "flowbite.s3.amazonaws.com",
+      "res.cloudinary.com",
+      "lh3.googleusercontent.com",
+    ],
   },
 };

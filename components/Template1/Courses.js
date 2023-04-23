@@ -69,13 +69,13 @@ function Courses() {
 
 
   return (
-    <section class="bg-white dark:bg-gray-900">
+    <section class="bg-gray-900">
       <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
         <div class="mx-auto max-w-screen-sm text-center lg:mb-16 mb-8">
-          <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+          <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold  text-white">
             Our Courses
           </h2>
-          <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">
+          <p class="font-light  sm:text-xl text-gray-400">
             Providing the Best Courses for you to learn and grow ....
           </p>
         </div>
@@ -83,13 +83,13 @@ function Courses() {
           {courses?.map((course, index) => (
             <article
               key={index}
-              class="p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
+              class="p-6  rounded-lg border shadow-md bg-gray-800 border-gray-700"
             >
               <div class="flex gap-3 items-center mb-5 text-gray-500">
                 {course?.course_topic?.split(",").map((topic, index) => (
                   <span
                     key={index}
-                    class="bg-primary-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800"
+                    class="text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded bg-primary-200 text-primary-800"
                   >
                     <svg
                       class="mr-1 w-3 h-3"
@@ -102,7 +102,7 @@ function Courses() {
                     {topic}
                   </span>
                 ))}
-                <span class="bg-primary-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
+                <span class=" text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded bg-primary-200 text-primary-800">
                   <svg
                     class="mr-1 w-3 h-3"
                     fill="currentColor"
@@ -114,10 +114,10 @@ function Courses() {
                   Course
                 </span>
               </div>
-              <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              <h2 class="mb-2 text-2xl font-bold tracking-tight  text-white">
                 <a href="#">{course?.coursename}</a>
               </h2>
-              <p class="mb-5 font-light text-gray-500 dark:text-gray-400">
+              <p class="mb-5 font-light  text-gray-400">
                 {course?.course_description}
                 {course?.course_d_details}
               </p>
@@ -125,7 +125,7 @@ function Courses() {
                 <div class="flex items-center space-x-4">
                   <button
                     type="button"
-                    class="py-2.5 px-5 text-xl font-bold text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    class="py-2.5 px-5 text-xl font-bold  focus:outline-none rounded-lg border   focus:z-10 focus:ring-4  focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-primary-500 hover:bg-gray-700"
                   >
                     Price : {course?.course_price}
                   </button>
@@ -136,7 +136,7 @@ function Courses() {
                     setCourseslected(course?.id);
                   }}
                   href="#"
-                  class="inline-flex items-center font-medium text-primary-600 dark:text-primary-500 hover:underline"
+                  class="inline-flex items-center font-medium  text-primary-500 hover:underline"
                 >
                   Click
                   <svg
@@ -177,7 +177,7 @@ function Courses() {
                                 setCourseModal(false);
                               }}
                               type="button"
-                              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex dark:hover:bg-gray-600 dark:hover:text-white"
+                              class="text-gray-400 bg-transparent  hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex hover:bg-gray-600 hover:text-white"
                               data-modal-toggle="readProductModal"
                             >
                               <svg
@@ -279,7 +279,7 @@ function Courses() {
                                 handleBuy(course?.id)
                               }}
                                 type="button"
-                                class="py-2.5 px-5 text-xl font-medium text-gray-900 focus:outline-none bg-green-400 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                class="py-2.5 px-5 text-xl font-medium  focus:outline-none rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700"
                               >
                                 Buy
                               </button>
@@ -287,7 +287,7 @@ function Courses() {
                             {buyed && (
                               <button
                                 type="button"
-                                class="py-1.5 px-2 text-xl font-medium text-gray-900 focus:outline-none bg-green-400 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                class="py-1.5 px-2 text-xl font-medium  focus:outline-none rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700"
                               >
                                 Thanks For Buying ....
                               </button>
