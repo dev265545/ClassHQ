@@ -12,8 +12,9 @@ import {
   MdOutlineLogout,
   MdOutlineExplore,
   MdChat,
+  MdLiveTv,
 } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
+import { CgMediaLive, CgProfile } from "react-icons/cg";
 import { FaPills, FaRegComments } from "react-icons/fa";
 import { BiCalendarEvent, BiMessageSquareDots } from "react-icons/bi";
 
@@ -48,13 +49,13 @@ function Sidebar() {
               </div>
               <div
                 onClick={() =>
-                  router.push(`/EducatorDashboard/${session?.user?.id}/Profile`)
+                  router.push(`/EducatorDashboard/${session?.user?.id}/LiveStreaming`)
                 }
                 className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gradient-to-l from-purple-500 to-pink-500   p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"
               >
-                <CgProfile className="text-2xl text-white group-hover:text-white " />
+                <MdLiveTv className="text-2xl text-white group-hover:text-white " />
                 <h3 className="text-base text-white group-hover:text-white font-semibold ">
-                  Profile
+                  Live Streaming
                 </h3>
               </div>
 
