@@ -63,8 +63,7 @@ const router = useRouter()
           timestamp: serverTimestamp(),
         });
         console.log("success");
-        router.push(
-          `/${session?.user?.uid}/EducatorDashboard`        )
+        router.push(`/EducatorDashboard/${session?.user?.uid}`);
         
       }
     }
