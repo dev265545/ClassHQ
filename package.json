@@ -11,10 +11,11 @@
     "coverage": "jest --coverage"
   },
   "dependencies": {
+    "@100mslive/react-sdk": "^0.8.1",
     "@google-pay/button-react": "^3.0.6",
     "@headlessui/react": "^1.7.13",
     "@material-tailwind/react": "^1.4.2",
-    "@zegocloud/zego-uikit-prebuilt": "^1.7.5",
+    "@zegocloud/zego-uikit-prebuilt": "^1.8.0",
     "boostrap": "^2.0.0",
     "firebase": "^9.18.0",
     "flowbite": "^1.6.5",

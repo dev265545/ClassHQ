@@ -18,43 +18,62 @@ function Template1({id}) {
   const [studentSet, setStudentSet] = useState([]);
   const [studentSignedIn, setStudentSignedIn] = useState(false);
   const [courses, setCourses] = useState(false);
+  const [livestream, setLivestream] = useState(false);
+  const [livestreamopted, setLivestreamopted] = useState(false);
+
+ useEffect(()=>{
+   if (!session || id === undefined) {
+     console.log("not signed in");
+
+   } else {
+     getDoc(doc(db, "users", id,"students",session?.user?.uid)).then((docSnap) => {
+       if (docSnap.exists()) {
+         console.log("user exsits");
+         setStudentSignedIn(true);
+         setStudentSet(docSnap.data());
+         setLivestreamopted(studentSet?.livestream);
+
+         //  router.push(`/EducatorDashboard/${session?.user?.uid}`);
+       } else {
+         console.log("No such document!");
+         {
+           setDoc(
+             doc(
+               db,
+               "users",
+               router?.query?.id,
+               "students",
+               session?.user?.uid
+             ),
+             {
+               id: session.user.uid,
+               // tag: session.user.tag,
+               username: session.user.name,
+               userImg: session.user.image,
+               email: session.user.email,
+               courses: [],
+               livestream: false,
+
+               timestamp: serverTimestamp(),
+             }
+           );
+           console.log("success");
+         setStudentSignedIn(true);
+         setStudentSet(docSnap.data());
+         setLivestreamopted(studentSet?.livestream);
+         }
+       }
+     });
+   }
+ },[id, router?.query?.id, session, studentSet?.livestream])
  
-  if(!session || id  === undefined){
-   console.log('not signed in')
-  }
-  else {
-        getDoc(doc(db, "users", id,)).then((docSnap) => {
-    if (docSnap.exists()) {
-      
-      console.log("user exsits");
-      setStudentSignedIn(true);
-      setStudentSet(docSnap.data());
-      
-      //  router.push(`/EducatorDashboard/${session?.user?.uid}`);
-    } else {
-      console.log("No such document!");
-      {
-        setDoc(doc(db, "users",router?.query?.id,"students", session?.user?.uid), {
-          id: session.user.uid,
-          // tag: session.user.tag,
-          username: session.user.name,
-          userImg: session.user.image,
-          email: session.user.email,
-          // coverphoto: "https://i.im.ge/2022/07/26/FLevID.jpg",
-          // subscription : 1,
-          // website_template : null ,
-          // payment : null,
+  console.log("x",studentSet)
 
-          timestamp: serverTimestamp(),
-        });
-        console.log("success");
-      setStudentSignedIn(true);
-      
-        
-      }
-    }})};
-
-
+ const handlelivestream = () => {
+    const f = doc(db, "users", id,"students",session?.user?.uid);
+    setDoc(f, { livestream : true }, {merge: true });
+    setLivestreamopted(true);
+ }
 
 
 
@@ -157,7 +176,7 @@ function Template1({id}) {
               <li className="nav-item">
                 <div
                   onClick={() => {
-                    setCourses(false)
+                    setCourses(false);
                   }}
                   className="nav-link active"
                 >
@@ -165,14 +184,38 @@ function Template1({id}) {
                 </div>
               </li>
               <li className="nav-item">
-                <div
-                  onClick={() => {
-                    setCourses(true);
-                  }}
-                  className="nav-link active"
-                >
-                  Courses
-                </div>
+                {studentSignedIn && (
+                  <div
+                    onClick={() => {
+                      setCourses(true);
+                    }}
+                    className="nav-link active"
+                  >
+                    Courses
+                  </div>
+                )}
+                {!studentSignedIn && (
+                  <div disabled className="nav-link active">
+                    Courses
+                  </div>
+                )}
+              </li>
+              <li className="nav-item">
+                {studentSignedIn && (
+                  <div
+                    onClick={() => {
+                      setLivestream(true);
+                    }}
+                    className="nav-link active"
+                  >
+                    Live Streams
+                  </div>
+                )}
+                {!studentSignedIn && (
+                  <div disabled className="nav-link active">
+                    Live Streams
+                  </div>
+                )}
               </li>
             </ul>
             <div className="hamburger">
@@ -855,6 +898,72 @@ github: https://github.com/naemazam
                         <span className="w-48 h-48 rounded rotate-[-40deg] bg-[#1d9bf0] absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
                         <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white">
                           Sign Out
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {livestream && (
+          <div>
+            <div
+              id="popup-modal"
+              tabindex="-1"
+              class="fixed top-0 left-0 right-0 z-50  flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+            >
+              <div class="relative w-full max-w-md max-h-full">
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                  <button
+                    onClick={() => {
+                      setLivestream(false);
+                    }}
+                    type="button"
+                    class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                    data-modal-hide="popup-modal"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                  </button>
+                  <div class="p-6 text-center">
+                    <div className="text-black">
+                      Click the button to buy the Subscription to get notified
+                      whenever the educator makes a private livestream...
+                    </div>
+                    {!livestreamopted && (
+                      <button
+                        className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group"
+                        onClick={() =>
+                          handlelivestream()
+                        }
+                      >
+                        <span className="w-48 h-48 rounded rotate-[-40deg] bg-[#1d9bf0] absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                        <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white">
+                          Buy the Live Streaming Subscription
+                        </span>
+                      </button>
+                    )}
+                    {livestreamopted && (
+                      <button
+                        className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group"
+                       
+                      >
+                       <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white group-hover:bg-black">
+                          Thanks for buying the Subscription
                         </span>
                       </button>
                     )}

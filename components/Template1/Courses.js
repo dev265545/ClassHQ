@@ -1,4 +1,4 @@
-import { collection, getDoc, onSnapshot, query } from 'firebase/firestore';
+import { collection, doc, getDoc, onSnapshot, query, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState, Fragment } from "react";
 import {
   Accordion,
@@ -9,18 +9,26 @@ import {
 import { useRouter } from 'next/router';
 
 import { db } from '../../firebase';
+import { useSession } from 'next-auth/react';
 
 function Courses() {
+  const {data : session} = useSession()
+ 
+
   const [open, setOpen] = useState(1);
+
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
   const router = useRouter()
+  const [user, setUser] = useState([])
   const [courses, setCourses] = useState([])
    const id  = router?.query?.id
    const [coursemodal, setCourseModal] = useState(false)
-   const [buyed, setBuyed] = useState(true)
+   const [courseslected, setCourseslected] = useState()
+
+   const [buyed, setBuyed] = useState(false)
 
   useEffect(() => {
     if (router?.query?.id) {
@@ -34,7 +42,30 @@ function Courses() {
       );
     }
   }, [router?.query?.id]);
-
+  useEffect(() => {
+     if (router?.query?.id) {
+       getDoc(doc(db, "users", router?.query?.id,"students",session?.user?.uid)).then((docSnap) => {
+         if (docSnap.exists()) {
+           console.log("user exsits", docSnap.data());
+           setUser(docSnap.data());
+           user?.courses?.map((code)=>{
+              if(courseslected === code){
+                setBuyed(true)
+              }
+              else { 
+                setBuyed(false)
+              }
+           })
+         }
+       });
+     }
+  }, [courseslected, router?.query?.id, session?.user?.uid, user?.courses]);
+  const handleBuy = (course) => {
+    let x = user?.courses;
+    x.push(course);
+    const f = doc(db, "users", router?.query?.id,"students",session?.user?.uid);
+    setDoc(f, { courses: x }, { merge: true });
+  }
 
 
   return (
@@ -102,6 +133,7 @@ function Courses() {
                 <a
                   onClick={() => {
                     setCourseModal(true);
+                    setCourseslected(course?.id);
                   }}
                   href="#"
                   class="inline-flex items-center font-medium text-primary-600 dark:text-primary-500 hover:underline"
@@ -124,7 +156,7 @@ function Courses() {
               {coursemodal && (
                 <div
                   data-te-modal-init
-                  class="fixed left-0 top-0 z-50 h-full w-full flex  backdrop-blur-lg items-center justify-center overflow-y-auto overflow-x-hidden outline-none"
+                  class="fixed left-0 top-0   overflow-y-scroll z-50 h-full w-full flex  backdrop-blur-lg items-center justify-center overflow-y-auto overflow-x-hidden outline-none"
                   id="exampleModalLg"
                   tabindex="-1"
                   aria-labelledby="exampleModalLgLabel"
@@ -132,9 +164,9 @@ function Courses() {
                   role="dialog"
                 >
                   {
-                    <div class="relative p-4 w-full  h-full md:h-auto">
-                      <div class="relative p-4  rounded-lg shadow bg-gray-900 sm:p-5">
-                        <div class="flex justify-between mb-4 rounded-t sm:mb-5">
+                    <div class="relative  overflow-scroll   w-full  h-full md:h-auto">
+                      <div class="relative   rounded-lg shadow bg-gray-900 sm:p-5">
+                        <div class="flex justify-between rounded-t sm:mb-5">
                           <div class="text-lg  md:text-xl text-white">
                             <h3 class="font-semibold ">Course Details</h3>
                             <p class="font-bold">{course?.coursename}</p>
@@ -165,104 +197,31 @@ function Courses() {
                             </button>
                           </div>
                         </div>
-                        <section class="  rounded-xlbg-gray-900">
-                          <div class="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
+                        <section class="  rounded-xl bg-gray-900">
+                          <div class=" items-center  px-4   w-full lg:grid lg:grid-cols-2  lg:px-6">
                             <div class="font-light  sm:text-lg text-gray-400">
-                              <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-white">
+                              <h2 class=" text-4xl tracking-tight font-extrabold text-white">
                                 {course?.coursename}
                               </h2>
-                              <p class="mb-4">{course?.course_decription}</p>
+                              <p class="">{course?.course_decription}</p>
                               <p>{course?.course_d_details}</p>
                             </div>
 
-                            <div
-                              id="default-carousel"
-                              class="relative w-full"
-                              data-carousel="slide"
-                            >
+                           
                               <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-                                <div
-                                  class=" duration-100 ease-in-out"
-                                  data-carousel-item
-                                >
+                              
                                   {/* <img
                                     src={activetemplateId?.images[0]}
                                     class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                     alt="..."
                                   />{" "} */}
-                                </div>
-                                <div
-                                  class=" duration-100 ease-in-out"
-                                  data-carousel-item="active"
-                                >
-                                  {/* <img
-                                    src={activetemplateId?.images[1]}
-                                    class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                                    alt="..."
-                                  /> */}
-                                </div>
+                          
+                               
 
-                                <div
-                                  class=" duration-100 ease-in-out"
-                                  data-carousel-item
-                                >
-                                  {/* <img
-                                    src={activetemplateId?.images[2]}
-                                    class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                                    alt="..."
-                                  /> */}
-                                </div>
+                               
                               </div>
 
-                              <button
-                                type="button"
-                                class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                                data-carousel-prev
-                              >
-                                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                  <svg
-                                    aria-hidden="true"
-                                    class="w-6 h-6 text-white dark:text-gray-800"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M15 19l-7-7 7-7"
-                                    ></path>
-                                  </svg>
-                                  <span class="sr-only">Previous</span>
-                                </span>
-                              </button>
-                              <button
-                                type="button"
-                                class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                                data-carousel-next
-                              >
-                                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                  <svg
-                                    aria-hidden="true"
-                                    class="w-6 h-6 text-white dark:text-gray-800"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M9 5l7 7-7 7"
-                                    ></path>
-                                  </svg>
-                                  <span class="sr-only">Next</span>
-                                </span>
-                              </button>
-                            </div>
+                           
                           </div>
                         </section>
                         <div class="flex  flex-col ">
@@ -297,7 +256,7 @@ function Courses() {
                                           </div>
                                         </div>
                                         <div>
-                                          Notes 
+                                          Notes
                                           <div>
                                             <a
                                               href={module?.notes}
@@ -307,19 +266,32 @@ function Courses() {
                                               {module?.name}
                                             </a>
                                           </div>
-                                         
                                         </div>
                                       </div>
                                     </AccordionBody>
                                   </Accordion>
                                 </Fragment>
                               ))}
-                            <button
-                              type="button"
-                              class="py-2.5 px-5 text-xl font-medium text-gray-900 focus:outline-none bg-green-400 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                            >
-                              Buy
-                            </button>
+
+                            {!buyed && (
+                              <button
+                              onClick ={()=>{
+                                handleBuy(course?.id)
+                              }}
+                                type="button"
+                                class="py-2.5 px-5 text-xl font-medium text-gray-900 focus:outline-none bg-green-400 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                              >
+                                Buy
+                              </button>
+                            )}
+                            {buyed && (
+                              <button
+                                type="button"
+                                class="py-1.5 px-2 text-xl font-medium text-gray-900 focus:outline-none bg-green-400 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                              >
+                                Thanks For Buying ....
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>
