@@ -1,3 +1,12 @@
+import React from 'react'
+
+function X() {
+  return (
+    <div>X</div>
+  )
+}
+
+export default X
 // import React, { useEffect, useState } from "react";
 
 // import { useRouter } from "next/router";
