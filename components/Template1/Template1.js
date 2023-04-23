@@ -417,34 +417,7 @@ github: https://github.com/naemazam
                 {/* line skill bars*/}
                 <div className="line_content"></div>
                 {/* line skill bars*/}
-                <div className="skill-container flex1">
-                  {data?.subjects?.map((skill, index) => (
-                    <div key={index} className="circle_box">
-                      <svg className="skill-circle" height={150} width={150}>
-                        <circle
-                          cx={-40}
-                          cy={10}
-                          r={48}
-                          style={{
-                            strokeDasharray: 304 - (100 - skill.level) * 2,
-                          }}
-                          transform="translate(50,50) rotate(-90)"
-                        />
-                        <text
-                          id="text1"
-                          x={40}
-                          y={100}
-                          fill="#fff"
-                          fontFamily="Verdana"
-                          fontSize={28}
-                        >
-                          {skill.level}
-                        </text>
-                      </svg>
-                      <h4>{skill.skill}</h4>
-                    </div>
-                  ))}
-                </div>
+
               </div>
             </div>
           </section>
@@ -486,50 +459,7 @@ github: https://github.com/naemazam
               {/* Filter portfolio */}
             </div>
           </section>
-          <section className="experience background2">
-            <div className="container">
-              <div className="heading center">
-                <div className="heading_top flex">
-                  <div className="line" />
-                  <div className="line line2" />
-                  <i className="fas fa-circle" />
-                  <h3> Employment &amp; Education</h3>
-                </div>
-                <div className="heading_bottom">
-                  <h2>
-                    <span>My Experience Journey </span>
-                  </h2>
-                </div>
-              </div>
-              <div className="content flex">
-                <div className="left">
-                  <img src="image/e.jpg" alt="" />
-                </div>
-                <div className="right">
-                  {/*     timeline    */}
-                  <div className="timeline">
-                    <div className="line"></div>
-                    {data?.journey.map((exp, index) => (
-                      <div key={index} className="content content-1">
-                        <section>
-                          <i className="icon fas fa-briefcase" />
-                          <div className="details">
-                            <span>
-                              {" "}
-                              {exp.yearx}- {exp.yeary}
-                            </span>
-                            <h3>{exp.job}</h3>
-                          </div>
-                          <p> {exp.description}</p>
-                        </section>
-                      </div>
-                    ))}
-                  </div>
-                  {/*     timeline    */}
-                </div>
-              </div>
-            </div>
-          </section>
+        
           <section className="Testimonials mtop">
             <div className="container flex">
               <div className="left">
@@ -606,111 +536,8 @@ github: https://github.com/naemazam
             </div>
           </section>
 
-          {/* <section className="blog background2">
-        <div className="container"> */}
-          {/* <div className="heading heading2">
-            <div className="heading_top flex">
-              <div className="line" />
-              <div className="line line2" />
-              <i className="fas fa-circle" />
-              <h3>Paper &amp; project </h3>
-            </div>
-            <div className="heading_bottom">
-              <h2>
-                <span>Some Research &amp; Activity </span>
-              </h2>
-            </div>
-          </div> */}
-          {/* Photo Grid */}
-          {/* <div className="row">
-            {/* <div className="column">
-              <div className="box">
-                <img src="image/b1.jpg" />
-                <div className="text">
-                  <p>18 Sep, 2020 - Data Engineering </p>
-                  <h4>Research Paper Name </h4>
-                </div>
-              </div>
-            </div> */}
-          {/*<div className="column column2">
-              <div className="box">
-                <img src="image/b2.jpg" />
-                <div className="text">
-                  <p>18 Sep, 2020 - Artificial Intelligence</p>
-                  <h4>Research Paper Name</h4>
-                </div>
-              </div>
-              <div className="box">
-                <img src="image/b4.jpg" />
-                <div className="text">
-                  <p>18 Sep, 2020 - FriendBurst </p>
-                  <h4>Research Paper Name</h4>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="box">
-                <img src="image/b3.jpg" alt="" />
-                <div className="text">
-                  <p>18 Sep, 2020 - Machine Learning </p>
-                  <h4>Research Paper Name.</h4>
-                </div>
-              </div>
-            </div>
-          </div> */}
-          {/* Photo Grid */}
-          {/* </div>
-      </section> */}
-          <section className="contact top">
-            <div className="container flex">
-              <div className="left">
-                <img src="image/logo.png" alt="" />
-                <div className="heading">
-                  <div className="heading_bottom">
-                    <h2>
-                      <span>Associate</span>Professor
-                    </h2>
-                  </div>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="right">
-                <div className="heading">
-                  <div className="heading_top flex">
-                    <div className="line" />
-                    <div className="line line2" />
-                    <i className="fas fa-circle" />
-                    <h3>Any Question? </h3>
-                  </div>
-                  <div className="heading_bottom">
-                    <h2>
-                      <span>Drop Me A Line </span>
-                    </h2>
-                  </div>
-                </div>
-                <form className="mtop">
-                  <div className="input grid">
-                    <input type="text" placeholder="Name" />
-                    <input type="text" placeholder="Email" />
-                    <input type="text" placeholder="Subject" />
-                    <input type="text" placeholder="Phone" />
-                  </div>
-                  <textarea
-                    name="name"
-                    rows={5}
-                    cols={80}
-                    defaultValue={" Message"}
-                  />
-                  <button className="btn2 btn3">Send Message</button>
-                </form>
-              </div>
-            </div>
-          </section>
+       
+         
 
           <section className="social_media background2 ">
             <div className="container">
@@ -767,77 +594,7 @@ github: https://github.com/naemazam
       {courses && <Courses />}
 
       <footer>
-        <div className="container">
-          <div className="logo">
-            <img src="image/logo.png" alt="" />
-          </div>
-          <div className="content grid">
-            <div className="box">
-              <h4>Solutions</h4>
-              <ul>
-                <li>Control</li>
-                <li>Scalability &amp; Effciency</li>
-                <li>Supported by Experts</li>
-                <li>Performance &amp; Security</li>
-              </ul>
-            </div>
-            <div className="box">
-              <h4>Links</h4>
-              <ul>
-                <li>Home</li>
-                <li>About</li>
-                <li>Services</li>
-                <li>Work</li>
-                <li>Journey</li>
-              </ul>
-            </div>
-            <div className="box">
-              <h4>Resources</h4>
-              <ul>
-                <li>Case Studies</li>
-                <li>Blog</li>
-                <li>I'm a Clients</li>
-              </ul>
-            </div>
-            <div className="box">
-              <h4>Company</h4>
-              <ul>
-                <li>About Us</li>
-                <li>Careers</li>
-                <li>Newsroom</li>
-                <li>Contact Us</li>
-              </ul>
-            </div>
-            <div className="box">
-              <div className="text">
-                <span>000-000-000</span>
-                <br />
-                <label> Address</label>
-                <br />
-                <label>yourname@mit.edu</label>
-                <br />
-                <p>Cambridge,United States</p>
-              </div>
-              <div className="icon flex1">
-                <i className="fab fa-weixin" />
-                <i className="fab fa-qq" />
-                <i className="fab fa-youtube" />
-                <i className="fab fa-twitter" />
-                <i className="fab fa-linkedin-in" />
-              </div>
-            </div>
-          </div>
-          <div className="legal flex1">
-            <div className="box">
-              <p>Copyright (c) 2021 Copyright Naem Azam All Rights Reserved.</p>
-            </div>
-            <div className="box flex">
-              <p>
-                <a href="https://github.com/naemazam">GitHub</a>
-              </p>
-            </div>
-          </div>
-        </div>
+      
         {isOpen && (
           <div>
             <div

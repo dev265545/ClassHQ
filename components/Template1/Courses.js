@@ -42,6 +42,7 @@ function Courses() {
       );
     }
   }, [router?.query?.id]);
+  console.log(courses)
   useEffect(() => {
      if (router?.query?.id) {
        getDoc(doc(db, "users", router?.query?.id,"students",session?.user?.uid)).then((docSnap) => {
@@ -201,32 +202,25 @@ function Courses() {
                           <div class=" items-center  px-4   w-full lg:grid lg:grid-cols-2  lg:px-6">
                             <div class="font-light  sm:text-lg text-gray-400">
                               <h2 class=" text-4xl tracking-tight font-extrabold text-white">
-                                {course?.coursename}
+                                {course.coursename}
                               </h2>
                               <p class="">{course?.course_decription}</p>
                               <p>{course?.course_d_details}</p>
                             </div>
 
-                           
-                              <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-                              
-                                  {/* <img
+                            <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+                              {/* <img
                                     src={activetemplateId?.images[0]}
                                     class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                     alt="..."
                                   />{" "} */}
-                          
-                               
-
-                               
-                              </div>
-
-                           
+                            </div>
                           </div>
                         </section>
                         <div class="flex  flex-col ">
                           <div class="flex flex-col items-center ">
                             {buyed &&
+                              course?.modules &&
                               course?.modules.map((module, index) => (
                                 <Fragment key={index}>
                                   <Accordion open={open === index + 1}>
@@ -275,9 +269,9 @@ function Courses() {
 
                             {!buyed && (
                               <button
-                              onClick ={()=>{
-                                handleBuy(course?.id)
-                              }}
+                                onClick={() => {
+                                  handleBuy(course?.id);
+                                }}
                                 type="button"
                                 class="py-2.5 px-5 text-xl font-medium  focus:outline-none rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700"
                               >
@@ -294,6 +288,31 @@ function Courses() {
                             )}
                           </div>
                         </div>
+                      </div>
+                      <div>
+                        <button
+                          onClick={() => {
+                            setCourseModal(false);
+                          }}
+                          type="button"
+                          class="text-gray-400 bg-transparent  hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex hover:bg-gray-600 hover:text-white"
+                          data-modal-toggle="readProductModal"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                          <span class="sr-only">Close modal</span>
+                        </button>
                       </div>
                     </div>
                   }

@@ -3,7 +3,6 @@ import React from 'react'
 function Template1Modal({closeTemplate1Modal}) {
   return (
     <div
-      onClick={() => closeTemplate1Modal()}
       id="defaultModal"
       tabindex="-1"
       aria-hidden="true"
@@ -13,7 +12,7 @@ function Template1Modal({closeTemplate1Modal}) {
         <div class="relative p-4  rounded-lg shadow bg-gray-800 sm:p-5">
           <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 border-gray-600">
             <h3 class="text-lg font-semibold text-white">
-             Edit Website Content
+              Edit Website Content
             </h3>
             <button
               onClick={() => closeTemplate1Modal()}
@@ -51,23 +50,23 @@ function Template1Modal({closeTemplate1Modal}) {
                   name="name"
                   id="name"
                   class="border text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Type product name"
+                  placeholder="Input your name"
                   required=""
                 />
               </div>
               <div>
                 <label
                   for="brand"
-                  class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                  class="block mb-2 text-sm font-medium  text-white"
                 >
-                  Brand
+                  Your Expertise
                 </label>
                 <input
                   type="text"
                   name="brand"
                   id="brand"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Product brand"
+                  placeholder="Expertise Profile Job"
                   required=""
                 />
               </div>
@@ -76,34 +75,31 @@ function Template1Modal({closeTemplate1Modal}) {
                   for="price"
                   class="block mb-2 text-sm font-medium text-gray-900 text-white"
                 >
-                  Price
+                  Twitter Link
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   name="price"
                   id="price"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="$2999"
+                  placeholder="Twitter Link"
                   required=""
                 />
               </div>
               <div>
                 <label
-                  for="category"
+                  for="price"
                   class="block mb-2 text-sm font-medium text-gray-900 text-white"
                 >
-                  Category
+                  Youtube Link
                 </label>
-                <select
-                  id="category"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
-                >
-                  <option selected="">Select category</option>
-                  <option value="TV">TV/Monitors</option>
-                  <option value="PC">PC</option>
-                  <option value="GA">Gaming/Console</option>
-                  <option value="PH">Phones</option>
-                </select>
+                <input
+                  type="text"
+                  name="price"
+                  id="price"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="Github Link"
+                />
               </div>
               <div class="sm:col-span-2">
                 <label
@@ -118,6 +114,284 @@ function Template1Modal({closeTemplate1Modal}) {
                   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
                   placeholder="Write product description here"
                 ></textarea>
+              </div>
+            </div>
+            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+              <div>
+                <label
+                  for="name"
+                  class="block mb-2 text-sm font-medium text-white"
+                >
+                  Image Photo Link
+                </label>
+                <input
+                  type="text"
+                  name="photo"
+                  id="photo"
+                  class="border text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="Photo Link"
+                  required=""
+                />
+              </div>
+              <div>
+                <div>
+                  <label
+                    for="phone"
+                    class="block mb-2 text-sm font-medium text-white"
+                  >
+                    Phone number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    class=" text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="123-45-678"
+                    pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  for="price"
+                  class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                >
+                  Email ID
+                </label>
+                <input
+                  type="email"
+                  name="price"
+                  id="price"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder=" Email ID"
+                  required=""
+                />
+              </div>
+              <div>
+                <label
+                  for="price"
+                  class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                >
+                  LinkedIn link
+                </label>
+                <input
+                  type="url"
+                  name="price"
+                  id="price"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="LinkedIn link"
+                />
+              </div>
+            </div>
+            <div class="sm:col-span-2">
+              <label
+                for="description"
+                class="block mb-2 text-sm font-medium text-gray-900 text-white"
+              >
+                Description
+              </label>
+              <textarea
+                id="description"
+                rows="4"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                placeholder="Write product description here"
+              ></textarea>
+            </div>
+            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+              <div>
+                <label
+                  for="name"
+                  class="block mb-2 text-sm font-medium text-white"
+                >
+                  Image Photo Link
+                </label>
+                <input
+                  type="text"
+                  name="photo"
+                  id="photo"
+                  class="border text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="Photo Link"
+                  required=""
+                />
+              </div>
+              <div>
+                <div>
+                  <label
+                    for="phone"
+                    class="block mb-2 text-sm font-medium text-white"
+                  >
+                    Phone number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    class=" text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="123-45-678"
+                    pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  for="price"
+                  class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                >
+                  Email ID
+                </label>
+                <input
+                  type="email"
+                  name="price"
+                  id="price"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder=" Email ID"
+                  required=""
+                />
+              </div>
+              <div>
+                <label
+                  for="price"
+                  class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                >
+                  LinkedIn link
+                </label>
+                <input
+                  type="url"
+                  name="price"
+                  id="price"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="LinkedIn link"
+                />
+              </div>
+            </div>
+            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+              <div>
+                <label
+                  for="name"
+                  class="block mb-2 text-sm font-medium text-white"
+                >
+                  Image Photo Link
+                </label>
+                <input
+                  type="text"
+                  name="photo"
+                  id="photo"
+                  class="border text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="Photo Link"
+                  required=""
+                />
+              </div>
+              <div>
+                <div>
+                  <label
+                    for="phone"
+                    class="block mb-2 text-sm font-medium text-white"
+                  >
+                    Phone number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    class=" text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="123-45-678"
+                    pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  for="price"
+                  class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                >
+                  Email ID
+                </label>
+                <input
+                  type="email"
+                  name="price"
+                  id="price"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder=" Email ID"
+                  required=""
+                />
+              </div>
+              <div>
+                <label
+                  for="price"
+                  class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                >
+                  LinkedIn link
+                </label>
+                <input
+                  type="url"
+                  name="price"
+                  id="price"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="LinkedIn link"
+                />
+              </div>
+            </div>
+            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+              <div>
+                <label
+                  for="name"
+                  class="block mb-2 text-sm font-medium text-white"
+                >
+                  Image Photo Link
+                </label>
+                <input
+                  type="text"
+                  name="photo"
+                  id="photo"
+                  class="border text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="Photo Link"
+                  required=""
+                />
+              </div>
+              <div>
+                <div>
+                  <label
+                    for="phone"
+                    class="block mb-2 text-sm font-medium text-white"
+                  >
+                    Phone number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    class=" text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="123-45-678"
+                    pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  for="price"
+                  class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                >
+                  Email ID
+                </label>
+                <input
+                  type="email"
+                  name="price"
+                  id="price"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder=" Email ID"
+                  required=""
+                />
+              </div>
+              <div>
+                <label
+                  for="price"
+                  class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                >
+                  LinkedIn link
+                </label>
+                <input
+                  type="url"
+                  name="price"
+                  id="price"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="LinkedIn link"
+                />
               </div>
             </div>
             <button
