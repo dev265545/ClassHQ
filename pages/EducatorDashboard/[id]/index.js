@@ -21,6 +21,7 @@ import {
 import { useSession } from "next-auth/react";
 import { db } from "../../../firebase";
 import Image from "next/image";
+import { BiPlusCircle } from "react-icons/bi";
 
 function EducatorDashboard() {
   const { data: session } = useSession();
@@ -63,9 +64,29 @@ function EducatorDashboard() {
 
         <div className="flex flex-row gap-5 ">
           <WebsiteManagement user={user} />
-          <Course user = {user} />
-          
+          <Course user={user} />
+
           <ManageLive user={user} />
+        </div>
+        <div className="p-4  flex items-center justify-center w-[250px] h-[155px]  edges  bg-gray-800  rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+          <div className="flex flex-col">
+            <div className=" flex justify-end">
+              <p className="text-white text-lg font-bold inline-block">
+                Share your Website
+              </p>
+              <div className="w-24 p-2 bg-white rounded-full h-24 ">
+                
+                <a
+                  href={`http://localhost:3000/EducatorDashboard/${session?.user?.uid}/Show`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="  text-black flex items-center justify-center rounded-full p-3  font-bold uppercase text-xs  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
+                >
+                  Click Here
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* <GooglePlayButton

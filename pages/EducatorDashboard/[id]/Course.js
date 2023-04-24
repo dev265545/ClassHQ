@@ -91,7 +91,7 @@ modules : [],
           </div>
           <hr class="h-[2px] my-8 bg-black text-black"></hr>
         </div>
-        <div className="p-4  flex items-center justify-center w-[250px] h-[155px]  wavy  bg-gray-800  rounded-lg border shadow-md sm:p-8 bg-gray-800 border-gray-700">
+        <div className="p-4  flex items-center justify-center w-[250px] h-[155px]  edges  bg-gray-800  rounded-lg border shadow-md sm:p-8 bg-gray-800 border-gray-700">
           <div className="flex flex-col">
             <div
               onClick={() => {

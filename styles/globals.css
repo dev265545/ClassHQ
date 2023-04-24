@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.edges {
+    background-color: #000000;
+opacity: 0.8;
+background: linear-gradient(135deg, #53f74555 25%, transparent 25%) -28px 0/ 56px 56px, linear-gradient(225deg, #53f745 25%, transparent 25%) -28px 0/ 56px 56px, linear-gradient(315deg, #53f74555 25%, transparent 25%) 0px 0/ 56px 56px, linear-gradient(45deg, #53f745 25%, #000000 25%) 0px 0/ 56px 56px;
+}
 
 .wavy {
    background-color: #000000;
