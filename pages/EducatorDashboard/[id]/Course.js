@@ -21,7 +21,7 @@ function Course() {
   const [course_description, setCourseDescription] = useState("")
   const [course_d_details, setCourseDetails] = useState("")
   const [course_image, setCourseImage] = useState([])
-  const [course_price, setCoursePrice] = useState()
+  const [course_price, setCoursePrice] = useState(0)
   const [course_id, setCourseId] = useState("")
   const [onClick,setonClick] = useState(false)
   const [courseSelected, setCourseSelected] = useState({})
@@ -54,6 +54,7 @@ function Course() {
   console.log(courses)
   const handleaddcourse =  (e)=>{
     e.preventDefault();
+    if(course_price>=0){
     const newCityRef = doc(collection(db, "users", router?.query?.id, "courses"));
     setDoc(newCityRef, {
   course_topic: course_topic,
@@ -64,7 +65,10 @@ function Course() {
 modules : [],
   coursename: coursename,
 
-});
+});}
+else{
+  alert("Please enter a valid price")
+}
   }
   return (
     <div className="flex  bg-purple-200 min-h-screen flex-row gap-60">

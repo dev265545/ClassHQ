@@ -76,6 +76,7 @@ function CourseModal({course,closecourseModal}) {
   }
   const handleaddcourse = (e) => {
     e.preventDefault();
+    if(course_price>=0){
     const newCityRef = doc(db, "users", router?.query?.id, "courses",course?.id);
     setDoc(newCityRef, {
       course_topic: course_topic,
@@ -85,7 +86,10 @@ function CourseModal({course,closecourseModal}) {
       course_price: course_price,
       modules : course?.modules,
       coursename: coursename,
-    }, { merge: true });
+    }, { merge: true });}
+    else {
+      alert("Price cannot be negative")
+    }
   };
   return (
     <div

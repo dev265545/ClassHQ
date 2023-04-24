@@ -24,33 +24,36 @@ function WebsiteModal({isOpen, closeModal, openModal,user}) {
     const [expertise_Details, setExpertise_Details] = useState(user?.website_data?.expertise_Details);
     
   const [yoe, setYoe] = useState(user?.website_data?.yoe);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const data = {
-      name: name,
-      level: level,
-      email: email,
-      phone: phone,
-      image: image,
-      description: description,
-      linkedin: linkedin,
-      twitter: twitter,
-      youtube: youtube,
-      details: details,
-      numberofstudents: numberofstudents,
-      numberofcourses: numberofcourses,
-      numberofexpertise: numberofexpertise,
-      expertise_Details: expertise_Details,
-      yoe: yoe,
-    };
-    setDoc(
-      doc(db, "users", session?.user?.uid),
-      { website_data: data },
-      { merge: true }
-    );
-    closeModal();
-   
-  };
+ const handleSubmit = (e) => {
+   e.preventDefault();
+   if (email.includes("@") && email.includes(".") && phone.length === 12) {
+     const data = {
+       name: name,
+       level: level,
+       email: email,
+       phone: phone,
+       image: image,
+       description: description,
+       linkedin: linkedin,
+       twitter: twitter,
+       youtube: youtube,
+       details: details,
+       numberofstudents: numberofstudents,
+       numberofcourses: numberofcourses,
+       numberofexpertise: numberofexpertise,
+       expertise_Details: expertise_Details,
+       yoe: yoe,
+     };
+     setDoc(
+       doc(db, "users", session?.user?.uid),
+       { website_data: data },
+       { merge: true }
+     );
+     closeModal();
+   } else {
+     alert("Please enter valid details");
+   }
+ };
     
   return (
     <div

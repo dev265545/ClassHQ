@@ -22,7 +22,9 @@ function Template1Modal({closeTemplate1Modal}) {
 
   const [yoe, setYoe] = useState('')
   const handleSubmit = (e)=>{
+
     e.preventDefault()
+    if(email.includes('@') && email.includes('.')&&(phone.length===12 )){
     const data = {
       name : name,
       level : level,
@@ -44,7 +46,10 @@ function Template1Modal({closeTemplate1Modal}) {
     setDoc(doc(db, "users", session?.user?.uid),{website_data : data} , { merge: true }
     
     )
-    closeTemplate1Modal();
+    closeTemplate1Modal();}
+    else{
+      alert("Please enter valid details")
+    }
   }
   
   return (
