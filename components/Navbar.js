@@ -13,6 +13,7 @@ import {
   MdOutlineExplore,
   MdChat,
   MdLiveTv,
+  MdSubscriptions,
 } from "react-icons/md";
 import { CgMediaLive, CgProfile } from "react-icons/cg";
 import { FaPills, FaRegComments } from "react-icons/fa";
@@ -49,7 +50,9 @@ function Sidebar() {
               </div>
               <div
                 onClick={() =>
-                  router.push(`/EducatorDashboard/${session?.user?.uid}/LiveStreaming`)
+                  router.push(
+                    `/EducatorDashboard/${session?.user?.uid}/LiveStreaming`
+                  )
                 }
                 className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gradient-to-l from-purple-500 to-pink-500   p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"
               >
@@ -98,7 +101,21 @@ function Sidebar() {
               </div>
             </div>
             {/* setting  */}
-            <div className=" my-4 border-b border-gray-100 pb-4"></div>
+            <div className="  border-b border-gray-100 ">
+              <div
+                onClick={() =>
+                  router.push(
+                    `/EducatorDashboard/${session?.user?.uid}/Subscription`
+                  )
+                }
+                className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gradient-to-l from-purple-500 to-pink-500   p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"
+              >
+                <MdSubscriptions className="text-2xl text-white group-hover:text-white " />
+                <h3 className="text-base text-white group-hover:text-white font-semibold ">
+                  Subscription Plan
+                </h3>
+              </div>
+            </div>
             {/* logout */}
             <div className=" my-4">
               <div

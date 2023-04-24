@@ -12,14 +12,67 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { collection, doc, getDoc, onSnapshot, query, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import Courses from './Courses';
+import { CgProfile } from 'react-icons/cg';
 function Template1({id}) {
   const router = useRouter();
    const {data : session} = useSession();
   const [studentSet, setStudentSet] = useState([]);
+  const [user, setUser] = useState([]);
+  const [rating, setrating] = useState(0);
+  const [rateme, setRateme] = useState(false);
+  const [heading, setHeading] = useState("");
+  const [review, setReview] = useState("");
+
   const [studentSignedIn, setStudentSignedIn] = useState(false);
   const [courses, setCourses] = useState(false);
   const [livestream, setLivestream] = useState(false);
   const [livestreamopted, setLivestreamopted] = useState(false);
+  const [coursedata, setCoursedata] = useState([]);
+  useEffect(() => {
+    if (router?.query?.id) {
+
+      onSnapshot(
+        query(collection(db, "users", router?.query?.id, "courses")),
+        (snapshot) => {
+          setCoursedata(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          );
+        }
+      );
+    }
+  }, [router?.query?.id]);
+   
+  const handleconfirm=()=>{
+    const data = {
+      heading: heading,
+      review: review,
+      rating: rating,
+      name :  session?.user?.name,
+      email : session?.user?.email,
+      image : session?.user?.image,
+
+    }
+    let x = user?.reviews
+    x.push(data)
+
+    setDoc(doc(db, "users", router?.query?.id,),{
+     
+      reviews : x
+    },{merge:true})
+    setRateme(false)
+  }
+useEffect(() => {
+  if (router?.query?.id) {
+    getDoc(
+      doc(db, "users", router?.query?.id)
+    ).then((docSnap) => {
+      if (docSnap.exists()) {
+        console.log("user exsits", docSnap.data());
+        setUser(docSnap.data());
+      }
+    });
+  }
+}, [router?.query?.id, session?.user?.uid]);
 
  useEffect(()=>{
    if (!session || id === undefined) {
@@ -86,67 +139,7 @@ function Template1({id}) {
     setIsOpen(false);
   };
 
-  const data = {
-    name: "Naem Azam",
-    links: ["Home", "Courses"],
-    job: "Web Developer",
-    firstname: "Naem",
-    lastname: "Azam",
-    description:
-      " I am a web developer. I have 2 years of experience in web development. W ith 12 years of experience and ",
-    subdescription: "",
-    aboutyourexpertise: "Lorem ipsum   ",
-    online:
-      "I am a web developer. I have 2 years of experience in web development. I have worked  on ",
-    skills: [
-      { skill: "Machine Learning", level: 90 },
-      { skill: "Machine Learning", level: 95 },
-      ,
-      { skill: "Machine Learning", level: 95 },
-    ],
-    subjects: [
-      { skill: "Python", level: 95 },
-      { skill: "Python", level: 70 },
-      { skill: "Python", level: 50 },
-      { skill: "Python", level: 100 },
-    ],
-    journey: [
-      {
-        yearx: "2010",
-        yeary: "2013",
-        job: "Job 1",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      },
-      {
-        yearx: "2010",
-        yeary: "2013",
-        job: "Job 1",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      },
-      {
-        yearx: "2010",
-        yeary: "2013",
-        job: "Job 1",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      },
-    ],
-    courses: [
-      {
-        topic: "e",
-      },
-      {
-        topic: "e",
-      },
-    ],
-    experience: {
-      name: "Years of Experience",
-      yoe: 12,
-    },
-    quote: "quote",
-  };
+  
   return (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -170,7 +163,7 @@ function Template1({id}) {
         <div className="container">
           <nav className="navbar">
             <a href="#" className="nav-logo">
-              <img src="image/logo.png" alt="" />
+              {user?.website_data?.name}'s Site
             </a>
             <ul className="nav-menu">
               <li className="nav-item">
@@ -184,7 +177,7 @@ function Template1({id}) {
                 </div>
               </li>
               <li className="nav-item">
-                {studentSignedIn && (
+                {studentSignedIn && user?.subscription !== 1 && (
                   <div
                     onClick={() => {
                       setCourses(true);
@@ -194,14 +187,15 @@ function Template1({id}) {
                     Courses
                   </div>
                 )}
-                {!studentSignedIn && (
-                  <div disabled className="nav-link active">
-                    Courses
-                  </div>
-                )}
+                {!studentSignedIn ||
+                  (user?.subscription === 1 && (
+                    <div disabled className="nav-link active">
+                      Courses
+                    </div>
+                  ))}
               </li>
               <li className="nav-item">
-                {studentSignedIn && (
+                {studentSignedIn && user?.subscription === 3 && (
                   <div
                     onClick={() => {
                       setLivestream(true);
@@ -211,7 +205,7 @@ function Template1({id}) {
                     Live Streams
                   </div>
                 )}
-                {!studentSignedIn && (
+                {!studentSignedIn || user?.subscription !==3 && (
                   <div disabled className="nav-link active">
                     Live Streams
                   </div>
@@ -240,16 +234,13 @@ github: https://github.com/naemazam
                     <div className="line" />
                     <div className="line line2" />
                     <i className="fas fa-circle" />
-                    <h3>{data?.job} </h3>
+                    <h3>{user?.website_data?.level} </h3>
                   </div>
                   <div className="heading_bottom">
-                    <h1>
-                      <span>{data.firstname}</span>
-                      {data.lastname}
-                    </h1>
+                    <h1>{user?.website_data?.name}</h1>
                   </div>
                 </div>
-                <p> {data?.description} </p>
+                <p> {user?.website_data?.description} </p>
                 <div className="button p-2 gap-3">
                   {!studentSignedIn && (
                     <button
@@ -272,7 +263,14 @@ github: https://github.com/naemazam
                     </button>
                   )}
 
-                  <button className="btn2">Rate Me</button>
+                  <button
+                    onClick={() => {
+                      setRateme(true);
+                    }}
+                    className="btn2"
+                  >
+                    Rate Me
+                  </button>
                 </div>
               </div>
               <div className="right">
@@ -281,10 +279,7 @@ github: https://github.com/naemazam
                   <i className="fas fa-circle" />
                   <i className="fas fa-circle" />
                 </div>
-                <img src={home} alt="" />
-                <div className="icon flex">
-                  <i className="fab fa-twitter" />
-                </div>
+                <img src={user?.website_data?.image} alt="" />
               </div>
             </div>
           </section>
@@ -300,7 +295,7 @@ github: https://github.com/naemazam
                   <div className="items flex mtop">
                     <div className="box">
                       <div className="number">
-                        <h5>90+</h5>
+                        <h5>{user?.website_data?.numberofstudents}+</h5>
                       </div>
                       <div className="text">
                         <h3>Happy Students</h3>
@@ -308,28 +303,28 @@ github: https://github.com/naemazam
                     </div>
                     <div className="box">
                       <div className="number">
-                        <h5>{data?.courses?.length}+</h5>
+                        <h5>{user?.website_data?.numberofcourses}+</h5>
                       </div>
                       <div className="text">
-                        <h3>Courses to offer</h3>
+                        <h3>Courses taught till now</h3>
                       </div>
                     </div>
                   </div>
                   <div className="items flex mtop">
                     <div className="box">
                       <div className="number">
-                        <h5>15+</h5>
+                        <h5>{user?.website_data?.numberofexpertise}+</h5>
                       </div>
                       <div className="text">
-                        <h3>Projects Progresss</h3>
+                        <h3>Number of Expertise</h3>
                       </div>
                     </div>
                     <div className="box">
                       <div className="number">
-                        <h5>{data?.experience.yoe}+</h5>
+                        <h5>{user?.website_data?.yoe}+</h5>
                       </div>
                       <div className="text">
-                        <h3>{data?.experience.name}</h3>
+                        <h3>Years of Expreience</h3>
                       </div>
                     </div>
                   </div>
@@ -345,52 +340,18 @@ github: https://github.com/naemazam
                   </div>
                   <div className="heading_bottom">
                     <h2>
-                      <span>{data?.quote}</span>
+                      <span>
+                        "The future belong to those who believe in the beauty of
+                        their dreams"
+                      </span>
                     </h2>
                   </div>
-                  <h4>{data?.description}</h4>
-                </div>
-                <p>
-                  {" "}
-                  Currently, I Am in charge of two projects. Published many
-                  papers in internationally renowned conference journals.
-                </p>
-                <button className="btn2 btn3">Download CV</button>
-              </div>
-            </div>
-          </section>
-          <section className="services mtop">
-            <div className="container">
-              <div className="heading heading2">
-                <div className="heading_top flex">
-                  <div className="line" />
-                  <div className="line line2" />
-                  <i className="fas fa-circle" />
-                  <h3> My Services</h3>
-                </div>
-                <div className="heading_bottom">
-                  <h2>
-                    <span>What Can I Do Best ?</span>
-                  </h2>
-                </div>
-              </div>
-              <div className="content grid top">
-                <div className="box">
-                  <div className="img">
-                    <img src="https://img.icons8.com/ios/50/000000/machine-learning.png" />
-                  </div>
-                  <div className="text">
-                    <h3>Machine learning</h3>
-                    <hr />
-                    <p>
-                      Excepteur sint occaecat cupidatat non proident, sunt in
-                      culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                  </div>
+                  <h4>{user?.website_data?.details}</h4>
                 </div>
               </div>
             </div>
           </section>
+
           <section className="skills mtop background2">
             <div className="container flex">
               <div className="left">
@@ -409,7 +370,7 @@ github: https://github.com/naemazam
                 </div>
                 <div className="text">
                   <h3>Every Day is a New Challenge</h3>
-                  <p>{data?.aboutyourexpertise} </p>
+                  <p>{user?.website_data?.expertise_Details} </p>
                   <button className="btn2 btn3">Review Me</button>
                 </div>
               </div>
@@ -417,7 +378,6 @@ github: https://github.com/naemazam
                 {/* line skill bars*/}
                 <div className="line_content"></div>
                 {/* line skill bars*/}
-
               </div>
             </div>
           </section>
@@ -439,27 +399,86 @@ github: https://github.com/naemazam
                 </div>
               </div>
               {/* Filter portfolio */}
-              <div className="box">
-                <ul className="filter-item">
-                  <li
-                    className="filter_container"
-                    style={{ flexGrow: 1 }}
-                    data-item="web"
+              <div className="">
+              {coursedata?.map((course, index) => (
+            <article
+              key={index}
+              class="p-6  rounded-lg border shadow-md bg-gray-800 border-gray-700"
+            >
+              <div class="flex gap-3 items-center mb-5 text-gray-500">
+                {course?.course_topic?.split(",").map((topic, index) => (
+                  <span
+                    key={index}
+                    class="text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded bg-primary-200 text-primary-800"
                   >
-                    <img src="image/p1.jpg" alt="Avatar" className="image" />
-                    <div className="overlay">
-                      <div className="text">
-                        <h3>Illustrator Design</h3>
-                        <p>Mockup, Design, Inspiration </p>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
+                    <svg
+                      class="mr-1 w-3 h-3"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
+                    </svg>
+                    {topic}
+                  </span>
+                ))}
+                <span class=" text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded bg-primary-200 text-primary-800">
+                  <svg
+                    class="mr-1 w-3 h-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
+                  </svg>
+                  Course
+                </span>
               </div>
-              {/* Filter portfolio */}
-            </div>
+              <h2 class="mb-2 text-2xl font-bold tracking-tight  text-white">
+                <a href="#">{course?.coursename}</a>
+              </h2>
+              <p class="mb-5 font-light  text-gray-400">
+                {course?.course_description}
+                {course?.course_d_details}
+              </p>
+              <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                  <button
+                    type="button"
+                    class="py-2.5 px-5 text-xl font-bold  focus:outline-none rounded-lg border   focus:z-10 focus:ring-4  focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-primary-500 hover:bg-gray-700"
+                  >
+                    Price : {course?.course_price}
+                  </button>
+                </div>
+                <a
+               
+                  href="#"
+                  class="inline-flex items-center font-medium  text-primary-500 hover:underline"
+                >
+                  Click
+                  <svg
+                    class="ml-2 w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </a>
+              </div>
+              
+             
+            </article>
+            
+          ))}
+          </div>
+          </div>
           </section>
-        
+
           <section className="Testimonials mtop">
             <div className="container flex">
               <div className="left">
@@ -476,68 +495,27 @@ github: https://github.com/naemazam
                     </h2>
                   </div>
                 </div>
-
-                <div class="img grid top">
-                  <div class="box">
-                    <img src="image/t1.png" alt="" />
-                  </div>
-                  <div class="box">
-                    <img src="image/t2.png" alt="" />
-                  </div>
-                  <div class="box">
-                    <img src="image/t3.png" alt="" />
-                  </div>
-                  <div class="box">
-                    <img src="image/t4.png" alt="" />
-                  </div>
-                </div>
               </div>
               <div className="right">
                 <div className=" gap-4">
-                  <div className="item mtop">
-                    <div className="image flex1">
-                      <img src="image/c1.jpg" className="item_img" />
-                      <i className="fas fa-quote-right" />
+                  {user?.reviews?.map((review, index) => (
+                    <div key={index} className="item mtop">
+                      <div className="image flex1">
+                        <CgProfile className="item_img" />
+                        <i className="fas fa-quote-right" />
+                      </div>
+                      <div className="text">
+                        <p>{review?.heading}</p>
+                        <p>{review?.review}</p>
+                        <h4>Rating : {review?.rating} / 5</h4>
+                        <h4>{review?.name}</h4>
+                      </div>
                     </div>
-                    <div className="text">
-                      <p>
-                        Teachers have three loves: love of learning, love of
-                        learners, and the love of bringing the first two loves
-                        together{" "}
-                      </p>
-                      <h4>Naem</h4>
-                    </div>
-                  </div>
-                  <div className="item mtop">
-                    <div className="image flex1">
-                      <img src="image/c2.jpg" className="item_img" />
-                      <i className="fas fa-quote-right" />
-                    </div>
-                    <div className="text">
-                      <p>I am not a teacher, but an awakener</p>
-                      <h4>Robert Frost</h4>
-                    </div>
-                  </div>
-                  <div className="item mtop">
-                    <div className="image flex1">
-                      <img src="image/c3.jpg" className="item_img" />
-                      <i className="fas fa-quote-right" />
-                    </div>
-                    <div className="text">
-                      <p>
-                        They may forget what you said but they will not forget
-                        how you made them feel{" "}
-                      </p>
-                      <h4>Carl Buechner</h4>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
           </section>
-
-       
-         
 
           <section className="social_media background2 ">
             <div className="container">
@@ -554,35 +532,37 @@ github: https://github.com/naemazam
                     <i className="fas fa-phone-alt" />
                     <div className="text">
                       <p>Call Me At:</p>
-                      <span>000 - 000- 0000</span>
+                      <span>{user?.website_data?.phone}</span>
                     </div>
                   </div>
                   <div className="box">
                     <i className="fas fa-envelope-open-text" />
                     <div className="text">
                       <p>Email At:</p>
-                      <span>yourename@mit.edu</span>
+                      <span>{user?.website_data?.email}</span>
                     </div>
                   </div>
                   <div className="box">
                     <i className="fab fa-weixin" />
                     <div className="text">
-                      <p>WeChat:</p>
-                      <span>@yourename</span>
+                      <p>Youtube</p>
+                      <a href={user?.website_data?.youtube}>
+                        {user?.website_data?.youtube}
+                      </a>
                     </div>
                   </div>
                   <div className="box">
                     <i className="fab fa-twitter" />
                     <div className="text">
                       <p>Twitter:</p>
-                      <span>@yourename</span>
+                      <span>@DevGupta26</span>
                     </div>
                   </div>
                   <div className="box">
                     <i className="fab fa-linkedin-in" />
                     <div className="text">
                       <p>Linkedin:</p>
-                      <span>linkedin/yourname</span>
+                      <span></span>
                     </div>
                   </div>
                 </div>
@@ -594,7 +574,6 @@ github: https://github.com/naemazam
       {courses && <Courses />}
 
       <footer>
-      
         {isOpen && (
           <div>
             <div
@@ -704,9 +683,7 @@ github: https://github.com/naemazam
                     {!livestreamopted && (
                       <button
                         className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group"
-                        onClick={() =>
-                          handlelivestream()
-                        }
+                        onClick={() => handlelivestream()}
                       >
                         <span className="w-48 h-48 rounded rotate-[-40deg] bg-[#1d9bf0] absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
                         <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white">
@@ -715,17 +692,136 @@ github: https://github.com/naemazam
                       </button>
                     )}
                     {livestreamopted && (
-                      <button
-                        className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group"
-                       
-                      >
-                       <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white group-hover:bg-black">
+                      <button className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group">
+                        <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white group-hover:bg-black">
                           Thanks for buying the Subscription
                         </span>
                       </button>
                     )}
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {rateme && (
+          <div
+            id="successModal"
+            tabindex="-1"
+            aria-hidden="true"
+            class=" overflow-y-auto overflow-x-hidden absolute right-1/3 z-100 justify-center items-center "
+          >
+            <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+              <div class="relative p-4 text-center  rounded-lg shadow bg-gray-800 sm:p-5">
+                <button
+                  onClick={() => {
+                    setRateme(false);
+                  }}
+                  type="button"
+                  class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  data-modal-toggle="successModal"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+                <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
+                  <svg
+                    aria-hidden="true"
+                    class="w-8 h-8 text-green-500 dark:text-green-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <span class="sr-only">Success</span>
+                </div>
+                <div className="p-3">
+                  <div className="text-3xl p-1 font-semibold"> Reviews</div>
+                  <div>
+                    <form>
+                      <div class="w-full mb-4 border rounded-lg  bg-gray-700 border-gray-600">
+                        <div class="px-4 py-2 rounded-t-lg bg-gray-800">
+                          <label for="comment" class="sr-only">
+                            Your Review
+                          </label>
+                          <input
+                            id="comment"
+                            onChange={(e) => setHeading(e.target.value)}
+                            rows="4"
+                            class="w-full px-0 p-4 text-sm  bg-gray-800 focus:ring-0 text-white placeholder-gray-400"
+                            placeholder="Heading ..."
+                            value={heading}
+                          ></input>
+                          <textarea
+                            id="comment"
+                            onChange={(e) => setReview(e.target.value)}
+                            rows="4"
+                            class="w-full px-0 text-sm  border-0 bg-gray-800 focus:ring-0 text-white  placeholder-gray-400"
+                            placeholder="Write a Review..."
+                            required
+                            value={review}
+                          ></textarea>
+                        </div>
+                        <div class="px-4 py-2 pt-4 border-black  shadow-2xl  bg-gray-800 ">
+                          <div className=" text-white font-semibold pt-2 pb-3 ">
+                            Your Rating Out of 5
+                          </div>
+                          <label for="comment" class="sr-only">
+                            Your Rating Out of 5
+                          </label>
+                          <input
+                            onChange={(e) => setrating(e.target.value)}
+                            id="comment"
+                            rows="4"
+                            type="number"
+                            class="w-30 p-3 rounded-full px-0 text-sm  border-0 bg-gray-800 focus:ring-0  text-white placeholder-gray-400"
+                            placeholder="Your Rating Out of 5....."
+                            required
+                          ></input>
+                        </div>
+                        <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
+                          {/* <button
+                            onClick={() => handleconfirm()}
+                            type="submit"
+                            class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+                          >
+                            Submit Review
+                          </button> */}
+                          <div class="flex pl-0 space-x-1 sm:pl-2"></div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    handleconfirm();
+                  }}
+                  data-modal-toggle="successModal"
+                  type="button"
+                  class="py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:focus:ring-primary-900"
+                >
+                  Submit Review
+                </button>
               </div>
             </div>
           </div>

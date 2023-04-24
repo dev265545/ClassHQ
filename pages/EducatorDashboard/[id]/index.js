@@ -26,13 +26,13 @@ function EducatorDashboard() {
   const { data: session } = useSession();
 
   const [user, setUser] = useState([]);
-  useEffect(
-    () =>
-      onSnapshot(query(collection(db, "users")), (snapshot) => {
-        setUser(snapshot.docs[0].data());
-      }),
-    [db]
-  );
+  useEffect(() => {
+    if (session?.user?.uid) {
+      getDoc(doc(db, "users",session?.user?.uid)).then((doc) => {
+        setUser(doc.data());
+      });
+    }
+  }, [session]);
   console.log(user);
   return (
     <div className="flex  bg-purple-100 h-screen   flex-row gap-60">
@@ -62,8 +62,9 @@ function EducatorDashboard() {
         </div>
 
         <div className="flex flex-row gap-5 ">
-          <Course />
           <WebsiteManagement user={user} />
+          <Course user = {user} />
+          
           <ManageLive user={user} />
         </div>
 
