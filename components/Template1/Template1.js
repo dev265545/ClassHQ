@@ -792,6 +792,8 @@ github: https://github.com/naemazam
                             id="comment"
                             rows="4"
                             type="number"
+                            max={5}
+                            min={0}
                             class="w-30 p-3 rounded-full px-0 text-sm  border-0 bg-gray-800 focus:ring-0  text-white placeholder-gray-400"
                             placeholder="Your Rating Out of 5....."
                             required

@@ -33,7 +33,7 @@ function CourseModal({course,closecourseModal}) {
     const closeModal = () => {
     setAddamodule(false);}
   const handleaddmodule = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const data = {
         name: module_name,
         description: module_description,
@@ -46,15 +46,38 @@ function CourseModal({course,closecourseModal}) {
      console.log(modules)
     const newCityRef = doc(db, "users", router?.query?.id, "courses",course?.id);
     setDoc(newCityRef, {
-    
-      modules : modules
-    });
+      course_topic: course_topic,
+      course_description: course_description,
+      course_d_details: course_d_details,
+      course_image: course_image,
+      course_price: course_price,
+     
+      coursename: coursename,
+
+      modules: modules,
+    },{ merge: true });
   };
-  
+  const handledelete = (index) => {
+    let y = course?.modules
+   const x =y.splice(index, 1);
+
+    setDoc(doc(db, "users", router?.query?.id, "courses",course?.id), {
+      modules : x,
+      course_topic: course_topic,
+      course_description: course_description,
+      course_d_details: course_d_details,
+      course_image: course_image,
+      course_price: course_price,
+
+      coursename: coursename,
+    });
+    closecourseModal();
+    
+  }
   const handleaddcourse = (e) => {
     e.preventDefault();
     const newCityRef = doc(db, "users", router?.query?.id, "courses",course?.id);
-    updateDoc(newCityRef, {
+    setDoc(newCityRef, {
       course_topic: course_topic,
       course_description: course_description,
       course_d_details: course_d_details,
@@ -62,7 +85,7 @@ function CourseModal({course,closecourseModal}) {
       course_price: course_price,
       modules : course?.modules,
       coursename: coursename,
-    });
+    }, { merge: true });
   };
   return (
     <div
@@ -209,10 +232,56 @@ function CourseModal({course,closecourseModal}) {
                     setonClick(true);
                   }}
                   type="button"
-                  class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                  class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700"
                 >
                   Image Upload
                 </button> */}
+              </div>
+            </div>
+            <div>
+              <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left text-gray-500 text-gray-400">
+                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 bg-gray-700 text-gray-400">
+                    <tr>
+                      <th scope="col" class="px-6 py-3">
+                        Module Name
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Module Video Url
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Module Notes
+                      </th>
+                     
+                      <th scope="col" class="px-6 py-3">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {course?.modules?.map((module, index) => (
+                      <tr
+                        key={index}
+                        class=" border-b bg-gray-900 border-gray-700"
+                      >
+                        <th
+                          scope="row"
+                          class="px-6 py-4 font-medium  whitespace-nowrap text-white"
+                        >
+                          {module.name}
+                        </th>
+                        <td class="px-6 py-4">{module.video_url}</td>
+                        <td class="px-6 py-4">{module.notes}</td>
+
+                        <td class="px-6 py-4">
+                          <div onClick={()=>{handledelete(index)}} class="font-medium text-blue-600 text-blue-500 hover:underline">
+                            Delete
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
             <div>
@@ -220,7 +289,7 @@ function CourseModal({course,closecourseModal}) {
                 onClick={() => {
                   openModal();
                 }}
-                type="submit"
+                type="button"
                 class="text-white  font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-purple-600 hover:bg-pink-700 focus:ring-purple-800"
               >
                 Add A module
@@ -266,10 +335,10 @@ function CourseModal({course,closecourseModal}) {
         >
           <div className="relative p-4 w-full max-w-md h-full md:h-auto">
             {/* <!-- Modal content --> */}
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div className="relative bg-white rounded-lg shadow bg-gray-700">
               {/* <!-- Modal header --> */}
-              <div className="flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+              <div className="flex justify-between items-center p-5 rounded-t border-b border-gray-600">
+                <h3 className="text-xl font-medium text-gray-900 text-white">
                   Upload a Document
                 </h3>
                 <button
@@ -277,7 +346,7 @@ function CourseModal({course,closecourseModal}) {
                     setonClick(false);
                   }}
                   type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
                   data-modal-toggle="small-modal"
                 >
                   <svg
@@ -304,7 +373,7 @@ function CourseModal({course,closecourseModal}) {
                 />
               </div>
               {/* <!-- Modal footer --> */}
-              <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"></div>
+              <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 border-gray-600"></div>
             </div>
           </div>
         </div>
@@ -388,7 +457,7 @@ function CourseModal({course,closecourseModal}) {
                       for="name"
                       class="block mb-2 text-sm font-medium text-white"
                     >
-                      Module  Video Link
+                      Module Video Link
                     </label>
                     <input
                       type="text"
@@ -441,7 +510,7 @@ function CourseModal({course,closecourseModal}) {
                         setonClick(true);
                       }}
                       type="button"
-                      class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                      class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700"
                     >
                       Image Upload
                     </button> */}
@@ -453,7 +522,7 @@ function CourseModal({course,closecourseModal}) {
                     onClick={(e) => {
                       handleaddmodule(e);
                     }}
-                    type="submit"
+                    type="button"
                     class="text-white  font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800"
                   >
                     Add this Module to Course

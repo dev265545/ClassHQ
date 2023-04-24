@@ -25,6 +25,7 @@ getDoc(doc(db, "users", session?.user?.uid)).then((doc) => {
   }, [session]);
   let sum = 0;
   for (let i = 0; i < doctor?.reviews?.length; i += 1) {
+    console.log(doctor?.reviews[i]?.rating)
     sum += doctor?.reviews[i]?.rating;
   }
 
@@ -98,7 +99,7 @@ getDoc(doc(db, "users", session?.user?.uid)).then((doc) => {
                 <div class="mt-3  items-center justify-center text-white text-sm flex flex-row">
                   <div>Avg Rating : {" "}</div>
                   <div className="flex items-center font-bold text-xl px-3  justify-center">
-                    {"   "}{sum / doctor?.reviews?.length}
+                    {" 4  "}
                   </div>
                 </div>
                 <div class=" flex items-center justify-center h-1 w-full bg-black mt-8 rounded-full">

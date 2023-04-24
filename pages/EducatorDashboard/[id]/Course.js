@@ -61,7 +61,7 @@ function Course() {
   course_d_details: course_d_details,
   course_image: course_image,
   course_price: course_price,
-
+modules : [],
   coursename: coursename,
 
 });
